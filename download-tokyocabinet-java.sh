@@ -3,6 +3,8 @@ wget http://fallabs.com/tokyocabinet/javapkg/tokyocabinet-java-1.24.tar.gz
 tar zxvf tokyocabinet-java-1.24.tar.gz
 # remove the loader since we have our own special one
 rm -f tokyocabinet-java-1.24/Loader.java
+# remove ALL lines of code that loads the library
+sed -i '/System.loadLibrary/d' tokyocabinet-java-1.24/*.java;
 # copy everything over
 cp tokyocabinet-java-1.24/*.java tokyocabinet-api/src/main/java/tokyocabinet/
 # remove all tests

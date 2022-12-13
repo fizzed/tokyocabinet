@@ -1,0 +1,24 @@
+FROM ubuntu:18.04
+
+RUN apt-get update && \
+    apt-get install -yq tzdata && \
+    ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata
+ENV TZ="Etc/UTC"
+
+RUN apt update
+RUN apt -y upgrade
+RUN apt -y install build-essential libtool autoconf unzip wget curl iproute2 netcat-openbsd
+
+RUN wget https://raw.githubusercontent.com/jjlauer/vagrant-provision/master/linux/bootstrap-java.sh
+RUN chmod +x bootstrap-java.sh
+# Install Java 8
+RUN ./bootstrap-java.sh --slim --default --url=https://cdn.azul.com/zulu/bin/zulu8.66.0.15-ca-jdk8.0.352-linux_x64.tar.gz
+# Install Java 11
+#RUN ./bootstrap-java.sh --slim --default --url=https://cdn.azul.com/zulu/bin/zulu11.39.15-ca-fx-jdk11.0.7-linux_x64.tar.gz
+
+ENV JAVA_HOME="/usr/lib/jvm/current"
+ENV PATH="/usr/lib/jvm/current/bin:${PATH}"
+
+RUN apt -y install zlib1g-dev libbz2-dev
+COPY ./*.sh /root/

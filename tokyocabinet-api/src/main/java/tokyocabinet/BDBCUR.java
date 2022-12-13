@@ -31,7 +31,6 @@ public class BDBCUR {
   // static initializer
   //----------------------------------------------------------------
   static {
-    System.loadLibrary("jtokyocabinet");
     init();
   }
   //----------------------------------------------------------------

@@ -31,7 +31,6 @@ public class TDBQRY {
   // static initializer
   //----------------------------------------------------------------
   static {
-    System.loadLibrary("jtokyocabinet");
     init();
   }
   //----------------------------------------------------------------
