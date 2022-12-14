@@ -8,8 +8,7 @@ import java.io.File;
 public class Loader {
 
     static public void load() {
-        JNE.loadLibrary("tokyocabinet");
-        JNE.loadLibrary("jtokyocabinet");
+        CustomLoader.loadLibrary();
     }
 
 }
