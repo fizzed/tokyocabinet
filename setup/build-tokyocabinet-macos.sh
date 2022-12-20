@@ -7,11 +7,12 @@ cd tokyocabinet-1.4.48
 make -j4
 make install
 
-export PKG_CONFIG_PATH=$PWD/target
+CPPFLAGS=-I$PWD/target/include
+LDFLAGS=-L$PWD/target/lib
 wget http://fallabs.com/tokyocabinet/javapkg/tokyocabinet-java-1.24.tar.gz
 tar zxvf tokyocabinet-java-1.24.tar.gz
 cd tokyocabinet-java-1.24
-./configure
+./configure --prefix=$PWD/target
 make -j4
 make install
 
