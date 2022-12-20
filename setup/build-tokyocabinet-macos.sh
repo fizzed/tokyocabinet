@@ -9,7 +9,7 @@ make install
 
 
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$PWD/target/lib/pkgconfig
-#CPPFLAGS=-I$PWD/target/include
+CFLAGS=-I$JAVA_HOME/include
 #LDFLAGS=-L$PWD/target/lib
 wget http://fallabs.com/tokyocabinet/javapkg/tokyocabinet-java-1.24.tar.gz
 tar zxvf tokyocabinet-java-1.24.tar.gz
