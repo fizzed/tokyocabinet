@@ -1,5 +1,8 @@
-Java distribution of TokyoCabinet & JNI libs by Fizzed
-------------------------------------------------------
+# TokyoCabinet & Native Libs for Java by Fizzed
+
+[![Linux x64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-x64.yaml?branch=master&label=Linux%20x64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-x64.yaml)
+[![MacOS x64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/macos-x64.yaml?branch=master&label=MacOS%20x64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/macos-x64.yaml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.fizzed/tokyocabinet?style=flat-square)](https://mvnrepository.com/artifact/com.fizzed/tokyocabinet)
 
 TokyoCabinet remains a workhorse key-value store that still represents excellent performance vs. modern popular embedded
 key-value stores such as LevelDB or RocksDB.  This is a published version of the library for Java 8+, along with native libs that 
