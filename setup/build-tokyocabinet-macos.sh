@@ -3,7 +3,7 @@
 wget http://fallabs.com/tokyocabinet/tokyocabinet-1.4.48.tar.gz
 tar zxvf tokyocabinet-1.4.48.tar.gz
 cd tokyocabinet-1.4.48
-./configure --prefix=./target
+./configure --prefix=$PWD/target
 make -j4
 make install
 
