@@ -1,3 +1,7 @@
+## 0.0.8 - 2022-12-20
+ - Based on TokyoCabinet 1.4.48 and TokyoCabinet-Java 1.24
+ - MacOS x64 native libs built on BigSur
+
 ## 0.0.7 - 2022-12-15
  - Based on TokyoCabinet 1.4.48 and TokyoCabinet-Java 1.24
  - Improved prevention of duplicate library loading
