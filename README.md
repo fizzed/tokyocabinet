@@ -11,8 +11,9 @@ are automatically extracted at runtime.
 The Java library is as unmodified as possible from the original TokyoCabinet, but a few changes were made to automatically
 extract the library at runtime.
 
-Linux x64 native libs are compiled on Ubuntu 16.04, so you can be assured they'll work well on various flavors of linux
-going back several years in time.
+Native Libs:
+ - Linux x64: compiled on Ubuntu 16.04 (for improved compatability with older linux and glibc)
+ - MacOS x64: compiled on MacOS 10.13 (for improved compatability with older versions)
 
 ```xml
 <dependency>
