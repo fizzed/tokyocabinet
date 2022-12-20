@@ -8,5 +8,10 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Download tokyocabinet
+      - name: Set up Azul JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: 'zulu'
+      - name: Build tokyocabinet
         run: setup/build-tokyocabinet-macos.sh
