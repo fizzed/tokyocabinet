@@ -1,0 +1,12 @@
+name: OSX x64 Native Libs
+
+on:
+  push
+
+jobs:
+  build:
+    runs-on: mac-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download tokyocabinet
+        run: setup/build-tokyocabinet.sh
