@@ -7,6 +7,8 @@ cd tokyocabinet-1.4.48
 make -j4
 make install
 
+ls -la $JAVA_HOME
+
 
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$PWD/target/lib/pkgconfig
 CFLAGS=-I$JAVA_HOME/include
