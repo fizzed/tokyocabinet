@@ -26,6 +26,7 @@
         <module>tokyocabinet-api</module>
         <module>tokyocabinet-linux-x64</module>
         <module>tokyocabinet-macos-x64</module>
+        <module>tokyocabinet-macos-arm64</module>
         <module>tokyocabinet-integration-tests</module>
     </modules>
 
@@ -48,6 +49,12 @@
             <dependency>
                 <groupId>com.fizzed</groupId>
                 <artifactId>tokyocabinet-macos-x64</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fizzed</groupId>
+                <artifactId>tokyocabinet-macos-arm64</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

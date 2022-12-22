@@ -41,6 +41,11 @@
             <artifactId>tokyocabinet-macos-x64</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.fizzed</groupId>
+            <artifactId>tokyocabinet-macos-arm64</artifactId>
+        </dependency>
+
         <!-- testing -->
 
         <dependency>
