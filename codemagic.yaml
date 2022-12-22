@@ -1,7 +1,13 @@
 workflows:
-  my-workflow:
+  build:
+    name: MacOS arm64
     instance_type: mac_mini_m1
+    triggering:
+      events:
+        - pull_request
     scripts:
-      - name: say hello
-        script: echo "Hello Codemagician!"
+      - name: Setup Java 11
+        script: export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home
+      - name: Unit Tests
+        script: mvn test
 
