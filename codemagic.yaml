@@ -1,5 +1,6 @@
 workflows:
   my-workflow:
+    instance_type: mac_mini_m1
     scripts:
       - name: say hello
         script: echo "Hello Codemagician!"
