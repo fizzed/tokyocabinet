@@ -18,7 +18,8 @@ RUN apt -y install build-essential libtool autoconf unzip wget curl iproute2 net
 RUN wget https://raw.githubusercontent.com/jjlauer/vagrant-provision/master/linux/bootstrap-java.sh
 RUN chmod +x bootstrap-java.sh
 # Install Java 8
-RUN ./bootstrap-java.sh --slim --default --url=https://cdn.azul.com/zulu/bin/zulu8.66.0.15-ca-jdk8.0.352-linux_x64.tar.gz
+RUN if [ $(arch) = "x86_64" ]; then ./bootstrap-java.sh --slim --default --url=https://cdn.azul.com/zulu/bin/zulu8.66.0.15-ca-jdk8.0.352-linux_x64.tar.gz ; fi
+RUN if [ $(arch) = "aarch64" ]; then ./bootstrap-java.sh --slim --default --url=https://cdn.azul.com/zulu-embedded/bin/zulu8.66.0.15-ca-jdk8.0.352-linux_aarch64.tar.gz ; fi
 # Install Java 11
 #RUN ./bootstrap-java.sh --slim --default --url=https://cdn.azul.com/zulu/bin/zulu11.39.15-ca-fx-jdk11.0.7-linux_x64.tar.gz
 

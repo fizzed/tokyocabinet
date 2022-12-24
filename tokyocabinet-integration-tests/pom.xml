@@ -38,6 +38,11 @@
 
         <dependency>
             <groupId>com.fizzed</groupId>
+            <artifactId>tokyocabinet-linux-arm64</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fizzed</groupId>
             <artifactId>tokyocabinet-macos-x64</artifactId>
         </dependency>
 
