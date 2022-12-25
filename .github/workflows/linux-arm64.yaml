@@ -1,0 +1,28 @@
+name: Linux x64
+
+#on:
+#  push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        id: runcmd
+        with:
+          arch: aarch64
+          distro: ubuntu18.04
+          run: |
+            uname -a
+            echo ::set-output name=uname::$(uname -a)
+
+      #- name: Set up Azul JDK 11
+      #  uses: actions/setup-java@v3
+      #  with:
+      #    java-version: 11
+      #    distribution: 'zulu'
+      #    cache: 'maven'
+      #- name: Test in Maven
+      #  run: mvn test
