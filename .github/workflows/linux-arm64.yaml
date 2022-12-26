@@ -15,6 +15,7 @@ jobs:
           arch: aarch64
           distro: ubuntu18.04
           run: |
+            apt -y update
             apt -y upgrade
             apt -y install build-essential libtool autoconf unzip wget curl
             wget https://raw.githubusercontent.com/jjlauer/vagrant-provision/master/linux/bootstrap-java.sh
