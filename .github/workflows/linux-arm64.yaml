@@ -14,7 +14,7 @@ jobs:
         with:
           arch: aarch64
           distro: ubuntu18.04
-          run: |
+          install: |
             apt -y update
             apt -y upgrade
             apt -y install build-essential libtool autoconf unzip wget curl
@@ -24,6 +24,7 @@ jobs:
             wget https://raw.githubusercontent.com/jjlauer/vagrant-provision/master/linux/bootstrap-maven.sh
             chmod +x bootstrap-maven.sh
             ./bootstrap-maven.sh
+          run: |
             java -version
             mvn -version
 
