@@ -15,8 +15,16 @@ jobs:
           arch: aarch64
           distro: ubuntu18.04
           run: |
-            uname -a
-            echo ::set-output name=uname::$(uname -a)
+            apt -y upgrade
+            apt -y install build-essential libtool autoconf unzip wget curl
+            wget https://raw.githubusercontent.com/jjlauer/vagrant-provision/master/linux/bootstrap-java.sh
+            chmod +x bootstrap-java.sh
+            ./bootstrap-java.sh --slim --default --url=https://cdn.azul.com/zulu-embedded/bin/zulu8.66.0.15-ca-jdk8.0.352-linux_aarch64.tar.gz
+            wget https://raw.githubusercontent.com/jjlauer/vagrant-provision/master/linux/bootstrap-maven.sh
+            chmod +x bootstrap-maven.sh
+            ./bootstrap-maven.sh
+            java -version
+            mvn -version
 
       #- name: Set up Azul JDK 11
       #  uses: actions/setup-java@v3
