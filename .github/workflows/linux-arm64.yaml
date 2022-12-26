@@ -24,9 +24,8 @@ jobs:
             wget https://raw.githubusercontent.com/jjlauer/vagrant-provision/master/linux/bootstrap-maven.sh
             chmod +x bootstrap-maven.sh
             ./bootstrap-maven.sh
-          env: |
-            PATH: $PATH:/usr/lib/jvm/current/bin:/opt/maven/current/bin
           run: |
+            export PATH="$PATH:/usr/lib/jvm/current/bin:/opt/maven/current/bin"
             java -version
             mvn -version
 
