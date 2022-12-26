@@ -25,7 +25,7 @@ jobs:
             chmod +x bootstrap-maven.sh
             ./bootstrap-maven.sh
           env: |
-            PATH: "$PATH:/usr/lib/jvm/current/bin:/opt/maven/current/bin"
+            PATH: $PATH:/usr/lib/jvm/current/bin:/opt/maven/current/bin
           run: |
             java -version
             mvn -version
