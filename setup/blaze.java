@@ -67,7 +67,7 @@ public class blaze {
                     log.info("Will rsync current project to remote host...");
 
                     // sync our project directory to the remote host
-                    exec("rsync", "-avrt", "--delete", "--progress", "--exclude=target/", absProjectDir+"/", target.getSshHost()+":"+remoteProjectDir+"/").run();
+                    exec("rsync", "-avrt", "--delete", "--progress", "--exclude=.git/", "--exclude=target/", absProjectDir+"/", target.getSshHost()+":"+remoteProjectDir+"/").run();
 
                     if (target.getBaseDockerImage() != null) {
                         sshExec(session, remoteProjectDir + "/setup/helper-build-docker-container.sh", target.getBaseDockerImage(), target.getOsArch()).run();
@@ -108,7 +108,7 @@ public class blaze {
                     log.info("Will rsync current project to remote host...");
 
                     // sync our project directory to the remote host
-                    exec("rsync", "-avrt", "--delete", "--exclude=target/", "--progress", absProjectDir+"/", target.getSshHost()+":"+remoteProjectDir+"/").run();
+                    exec("rsync", "-avrt", "--delete", "--exclude=.git/", "--exclude=target/", "--progress", absProjectDir+"/", target.getSshHost()+":"+remoteProjectDir+"/").run();
 
                     if (target.getBaseDockerImage() != null) {
                         sshExec(session, "docker", "run", "-v", remoteProjectDir+":/project", "tokyocabinet-"+target.getOsArch(), "/project/setup/"+buildScript).run();

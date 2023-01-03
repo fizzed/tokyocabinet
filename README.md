@@ -22,6 +22,13 @@ extract the library at runtime.
 
 ## Native Libs
 
+Zip and Bzip2 libraries must be installed for this version to run.
+
+     sudo apt install zlib1g libbz2         # e.g. on ubuntu/debian
+     sudo apk add zlib bzip2                # e.g. on alpine
+
+On linux, please install zlib1g libbz2 packages installed
+
 | OS Arch          | Artifact                      | Info                              |
 |------------------|-------------------------------|-----------------------------------|
 | Linux x64        | tokyocabinet-linux-x64        | built on ubuntu 16.04, glibc 2.23 |

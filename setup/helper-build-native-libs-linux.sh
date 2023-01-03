@@ -12,7 +12,13 @@ cd ./target/tokyocabinet
 ./configure || exit 1
 make -j4 || exit 1
 
-cp ./libtokyocabinet.so "$PROJECT_DIR/target/output/"
+# we need to get rid of symlinked version
+# this helps prevent java load library from looking for the specific version
+cp ./libtokyocabinet.so ./temp.so
+rm -Rf ./libtokyocabinet*so*
+mv ./temp.so ./libtokyocabinet.so
+rm ./*.so
+#cp ./libtokyocabinet.so "$PROJECT_DIR/target/output/"
 
 # these flags will only help the ./configure succeed for tokyocabinet-java
 export TCDIR="$PWD"
@@ -33,6 +39,6 @@ make -j4 || exit 1
 
 cp ./libjtokyocabinet.so "$PROJECT_DIR/target/output/"
 
-strip "$PROJECT_DIR/target/output/libtokyocabinet.so" || exit 1
+#strip "$PROJECT_DIR/target/output/libtokyocabinet.so" || exit 1
 strip "$PROJECT_DIR/target/output/libjtokyocabinet.so" || exit 1
 chmod -R 777 "$PROJECT_DIR/target" || exit 1
