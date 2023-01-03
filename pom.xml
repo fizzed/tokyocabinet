@@ -31,6 +31,7 @@
         <module>tokyocabinet-linux-riscv64</module>
         <module>tokyocabinet-macos-x64</module>
         <module>tokyocabinet-macos-arm64</module>
+        <module>tokyocabinet-bom</module>
         <module>tokyocabinet-integration-tests</module>
     </modules>
 
