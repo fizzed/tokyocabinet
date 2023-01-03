@@ -1,7 +1,7 @@
 name: Linux riscv64
 on:
-  push
-  workflow_dispatch
+  - push
+  - workflow_dispatch
 jobs:
   bootstrap:
     runs-on: ubuntu-latest
