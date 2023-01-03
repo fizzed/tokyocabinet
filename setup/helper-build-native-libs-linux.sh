@@ -12,7 +12,8 @@ cd ./target/tokyocabinet
 ./configure || exit 1
 
 # get rid of soname with a version in it
-sed -i -e 's/-soname,libtokyocabinet.so.$(LIBVER)/-soname,libtokyocabinet.so/' Makefile
+sed -i -e 's/-Wl,-soname,libtokyocabinet.so.$(LIBVER)//' Makefile
+#sed -i -e 's/-Wl,-soname,libtokyocabinet.so.$(LIBVER)/-soname,libtokyocabinet.so/' Makefile
 
 make -j4 || exit 1
 
