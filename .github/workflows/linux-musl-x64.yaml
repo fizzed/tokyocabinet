@@ -1,11 +1,11 @@
-name: Linux x64
-
+name: Linux MUSL x64
 on:
   push
-
+  workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: alpine:latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Azul JDK 11

@@ -1,9 +1,9 @@
-name: Linux arm64
+name: Linux riscv64
 on:
   push
   workflow_dispatch
 jobs:
-  build:
+  bootstrap:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -14,8 +14,8 @@ jobs:
           cache: 'maven'
       - uses: uraimo/run-on-arch-action@v2
         with:
-          arch: aarch64
-          distro: ubuntu18.04
+          arch: riscv64
+          distro: ubuntu20.04
           githubToken: ${{ github.token }}
           dockerRunArgs: |
             --volume "~/.m2:/root/.m2" --volume "${PWD}:/mnt"

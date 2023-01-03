@@ -1,4 +1,4 @@
-name: Linux arm64
+name: Linux MUSL arm64
 on:
   push
   workflow_dispatch
@@ -15,13 +15,12 @@ jobs:
       - uses: uraimo/run-on-arch-action@v2
         with:
           arch: aarch64
-          distro: ubuntu18.04
+          distro: alpine_latest
           githubToken: ${{ github.token }}
           dockerRunArgs: |
             --volume "~/.m2:/root/.m2" --volume "${PWD}:/mnt"
           install: |
-            apt update
-            apt -y install openjdk-11-jdk-headless git curl wget gzip
+            apk add openjdk11-jdk git curl wget gzip
             wget https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-maven.sh
             chmod +x ./bootstrap-maven.sh
             ./bootstrap-maven.sh
