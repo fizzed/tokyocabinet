@@ -12,13 +12,8 @@ cd ./target/tokyocabinet
 ./configure || exit 1
 make -j4 || exit 1
 
-# we need to get rid of symlinked version
-# this helps prevent java load library from looking for the specific version
-#cp ./libtokyocabinet.dylib ./temp.dylib
-#rm -Rf ./libtokyocabinet*dylib
-#mv ./temp.dylib ./libtokyocabinet.dylib
-#cp ./libtokyocabinet.dylib "$PROJECT_DIR/target/output/"
-# we must force the use of the .a lib to static link
+# we want to force linking libjtokyocabinet against the static lib vs. the dynamic since some LD loading will look
+# for the soname and versioned library, but we can only auto extract a single .so at a time
 rm ./*.dylib
 
 export TCDIR="$PWD"

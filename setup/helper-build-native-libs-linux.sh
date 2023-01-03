@@ -10,20 +10,10 @@ mkdir -p target/output
 
 cd ./target/tokyocabinet
 ./configure || exit 1
-
-# get rid of soname with a version in it
-sed -i -e 's/-Wl,-soname,libtokyocabinet.so.$(LIBVER)//' Makefile
-#sed -i -e 's/-Wl,-soname,libtokyocabinet.so.$(LIBVER)/-soname,libtokyocabinet.so/' Makefile
-
 make -j4 || exit 1
 
-# we need to get rid of symlinked version
-# this helps prevent java load library from looking for the specific version
-#cp ./libtokyocabinet.so ./temp.so
-#rm -Rf ./libtokyocabinet*so*
-#mv ./temp.so ./libtokyocabinet.so
-#cp ./libtokyocabinet.so "$PROJECT_DIR/target/output/"
-# we must force the use of the .a lib to static link
+# we want to force linking libjtokyocabinet against the static lib vs. the dynamic since some LD loading will look
+# for the soname and versioned library, but we can only auto extract a single .so at a time
 rm ./*.so
 
 # these flags will only help the ./configure succeed for tokyocabinet-java
