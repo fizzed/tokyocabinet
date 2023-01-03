@@ -15,8 +15,8 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'jdkfile'
+          java-version: 11
           jdkFile: ${{ runner.temp }}/java_package.tar.gz
-          version: 11
           cache: 'maven'
       - name: Test in Maven
         run: mvn test
