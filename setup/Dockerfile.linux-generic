@@ -1,0 +1,36 @@
+ARG FROM_IMAGE=does-not-exist
+
+FROM ${FROM_IMAGE}
+
+RUN apt -y update
+RUN apt -y install build-essential libtool autoconf gzip unzip wget curl iproute2 netcat-openbsd git rsync
+
+# Fix locale and timezones (affects how java code compiles)
+RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt -y install tzdata locales
+RUN ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
+ENV TZ="Etc/UTC"
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+# Install java and maven
+RUN curl -O https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-java.sh
+RUN chmod +x bootstrap-java.sh
+RUN if [ $(arch) = "riscv64" ]; then apt -y install openjdk-11-jdk-headless ; else ./bootstrap-java.sh --slim --default --version=11 ; fi
+RUN if [ $(arch) = "riscv64" ]; then ln -s /usr/lib/jvm/java-11-openjdk-riscv64 /usr/lib/jvm/current ; fi
+RUN rm -f ./bootstrap-java.sh
+
+RUN wget https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-maven.sh
+RUN chmod +x ./bootstrap-maven.sh
+RUN ./bootstrap-maven.sh
+RUN rm -f ./bootstrap-maven.sh
+
+RUN rm -Rf .download-cache
+
+# tokyocabinet specific build dependencies
+RUN apt -y install zlib1g-dev libbz2-dev
+
+ENV M2_HOME="/opt/maven/current"
+ENV JAVA_HOME="/usr/lib/jvm/current"
+ENV PATH="${JAVA_HOME}/bin:${M2_HOME}/bin:${PATH}"

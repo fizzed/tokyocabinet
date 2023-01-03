@@ -1,25 +1,19 @@
 package tokyocabinet;
 
 import com.fizzed.jne.JNE;
+import com.fizzed.jne.MemoizedRunner;
 
 /**
- * Custom double-locked safe loading of native libs.
+ * Custom safe run once loading of native libs.
  */
 public class CustomLoader {
 
-  static private boolean LOADED = false;
+  static private final MemoizedRunner loader = new MemoizedRunner();
 
   static public void loadLibrary() {
-    if (LOADED) {
-      return;
-    }
-    synchronized (CustomLoader.class) {
-      if (!LOADED) {
-        LOADED = true;
-        JNE.loadLibrary("tokyocabinet");
-        JNE.loadLibrary("jtokyocabinet");
-      }
-    }
+    loader.once(() -> {
+      JNE.loadLibrary("jtokyocabinet");
+    });
   }
 
 }

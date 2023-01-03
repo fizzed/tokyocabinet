@@ -25,30 +25,58 @@
     </build>
 
     <dependencies>
-        
+
         <dependency>
             <groupId>com.fizzed</groupId>
             <artifactId>tokyocabinet-api</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>com.fizzed</groupId>
             <artifactId>tokyocabinet-linux-x64</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>com.fizzed</groupId>
             <artifactId>tokyocabinet-linux-arm64</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fizzed</groupId>
+            <artifactId>tokyocabinet-linux_musl-x64</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fizzed</groupId>
+            <artifactId>tokyocabinet-linux_musl-arm64</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fizzed</groupId>
+            <artifactId>tokyocabinet-linux-riscv64</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>com.fizzed</groupId>
             <artifactId>tokyocabinet-macos-x64</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.fizzed</groupId>
             <artifactId>tokyocabinet-macos-arm64</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- testing -->

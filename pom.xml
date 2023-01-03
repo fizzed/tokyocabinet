@@ -26,6 +26,9 @@
         <module>tokyocabinet-api</module>
         <module>tokyocabinet-linux-x64</module>
         <module>tokyocabinet-linux-arm64</module>
+        <module>tokyocabinet-linux_musl-x64</module>
+        <module>tokyocabinet-linux_musl-arm64</module>
+        <module>tokyocabinet-linux-riscv64</module>
         <module>tokyocabinet-macos-x64</module>
         <module>tokyocabinet-macos-arm64</module>
         <module>tokyocabinet-integration-tests</module>
@@ -43,32 +46,8 @@
 
             <dependency>
                 <groupId>com.fizzed</groupId>
-                <artifactId>tokyocabinet-linux-x64</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fizzed</groupId>
-                <artifactId>tokyocabinet-linux-arm64</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fizzed</groupId>
-                <artifactId>tokyocabinet-macos-x64</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fizzed</groupId>
-                <artifactId>tokyocabinet-macos-arm64</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fizzed</groupId>
                 <artifactId>jne</artifactId>
-                <version>3.0.2</version>
+                <version>3.1.2</version>
             </dependency>
             
             <!-- testing -->
