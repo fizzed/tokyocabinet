@@ -16,7 +16,8 @@ jobs:
         with:
           arch: none
           distro: none
-          base_image: amd64/alpine:3.11
+          base_image: amd64/alpine:latest
+          shell: /bin/sh
           githubToken: ${{ github.token }}
           dockerRunArgs: |
             --volume "~/.m2:/root/.m2" --volume "${PWD}:/mnt"
