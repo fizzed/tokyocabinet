@@ -6,15 +6,13 @@ import com.fizzed.blaze.Contexts;
 import static com.fizzed.blaze.Contexts.withBaseDir;
 import static com.fizzed.blaze.Contexts.fail;
 import static com.fizzed.blaze.Systems.exec;
-import static com.fizzed.blaze.Systems.exec;
 import com.fizzed.blaze.ssh.SshSession;
 import static com.fizzed.blaze.SecureShells.sshConnect;
 import static com.fizzed.blaze.SecureShells.sshExec;
 
 public class blaze {
-
     private final Logger log = Contexts.logger();
-    private final Path relProjectDir = withBaseDir("..");
+
     private final List<Target> targets = asList(
         // Linux x64 (ubuntu 16.04, glibc 2.23+)
         new Target("linux", "x64", null, "amd64/ubuntu:16.04"),
@@ -46,86 +44,173 @@ public class blaze {
     );
 
     public void build_containers() throws Exception {
+        this.execute((target, project, executor) -> {
+            executor.execute(
+                // local execute
+                () -> {
+                    exec(project.relativePath("setup/helper-build-docker-container.sh"), target.getBaseDockerImage(), target.getOsArch()).run();
+                },
+                // remote execute
+                (sshSession) -> {
+                    // remote in docker execute
+                    if (target.getBaseDockerImage() != null) {
+                        sshExec(sshSession, project.remotePath("setup/helper-build-docker-container.sh"), target.getBaseDockerImage(), target.getOsArch()).run();
+                    } else {
+                        // remote (non docker) execute
+                        // nothing to do, project already synced
+                    }
+                }
+            );
+        });
+    }
+
+    private String resolveBuildScriptFunc(Target target) {
+        switch (target.getOs()) {
+            case "macos":
+                return "setup/helper-build-native-libs-macos.sh";
+            case "linux":
+            case "linux_musl":
+                return "setup/helper-build-native-libs-linux.sh";
+            default:
+                throw new RuntimeException("Unsupported os " + target.getOs());
+        }
+    }
+
+    public void build_native_libs() throws Exception {
+        this.execute((target, project, executor) -> {
+            final String buildScript = this.resolveBuildScriptFunc(target);
+            final String artifactRelPath = "tokyocabinet-" + target.getOsArch() + "/src/main/resources/jne/" + target.getOs() + "/" + target.getArch() + "/";
+
+            executor.execute(
+                // local execute
+                () -> {
+                    exec("docker", "run", "-v", project.getAbsoluteDir() + ":/project", "tokyocabinet-" + target.getOsArch(), "/project/" + buildScript).run();
+
+                    // rsync the project target/output to the target project
+                    exec("rsync", "-avrt", "--delete", "--progress", project.relativePath("target/output/"), project.relativePath(artifactRelPath)).run();
+                },
+                // remote execute
+                (sshSession) -> {
+                    // remote in docker execute
+                    if (target.getBaseDockerImage() != null) {
+                        sshExec(sshSession, "docker", "run", "-v", project.getRemoteDir() + ":/project", "tokyocabinet-" + target.getOsArch(), "/project/" + buildScript).run();
+                    } else {
+                        // remote (non docker) execute
+                        sshExec(sshSession, project.remotePath(buildScript)).run();
+                    }
+
+                    // rsync the project target/output to the target project
+                    exec("rsync", "-avrt", "--delete", "--progress", target.getSshHost() + ":" + project.remotePath("target/output/"), project.relativePath(artifactRelPath)).run();
+                }
+            );
+        });
+    }
+
+    public void execute(ProjectExecute projectExecute) throws Exception {
+        final Path relProjectDir = withBaseDir("..");
         final Path absProjectDir = relProjectDir.toRealPath();
 
-        log.info("Project dir: {}", absProjectDir);
+        log.info("=====================================================");
+        log.info("Project info");
+        log.info("  relativeDir: {}", relProjectDir);
+        log.info("  absoluteDir: {}", absProjectDir);
+        log.info("  targets:");
+        for (Target target : targets) {
+            log.info("    {}", target);
+        }
+        log.info("");
 
         for (Target target : targets) {
+            log.info("=====================================================");
+            log.info("Executing for");
+            log.info("  os-arch: {}", target.getOsArch());
+            log.info("  ssh: {}", target.getSshHost());
+            log.info("  baseDockerImage: {}", target.getBaseDockerImage());
+
             if (target.getSshHost() != null) {
                 final String remoteProjectDir = "~/remote-build/" + absProjectDir.getFileName().toString();
-                log.info("Remote project dir: {}", remoteProjectDir);
+                log.info("  remoteDir: {}", remoteProjectDir);
 
-                try (SshSession session = sshConnect("ssh://" + target.getSshHost()).run()) {
+                try (SshSession sshSession = sshConnect("ssh://" + target.getSshHost()).run()) {
                     log.info("Connected with...");
 
-                    sshExec(session, "uname", "-a").run();
+                    sshExec(sshSession, "uname", "-a").run();
 
                     log.info("Will make sure remote host has project dir {}", remoteProjectDir);
 
-                    sshExec(session, "mkdir", "-p", remoteProjectDir).run();
+                    sshExec(sshSession, "mkdir", "-p", remoteProjectDir).run();
 
                     log.info("Will rsync current project to remote host...");
 
                     // sync our project directory to the remote host
                     exec("rsync", "-avrt", "--delete", "--progress", "--exclude=.git/", "--exclude=target/", absProjectDir+"/", target.getSshHost()+":"+remoteProjectDir+"/").run();
 
-                    if (target.getBaseDockerImage() != null) {
-                        sshExec(session, remoteProjectDir + "/setup/helper-build-docker-container.sh", target.getBaseDockerImage(), target.getOsArch()).run();
-                    } else {
-                        // remote environment just needed our projec directory
-                    }
+                    final LogicalProject project = new LogicalProject(absProjectDir, relProjectDir, remoteProjectDir);
+
+                    projectExecute.execute(target, project, (localExecute, remoteExecute) -> {
+                        remoteExecute.execute(sshSession);
+                    });
                 }
             } else {
-                // local container
-                exec(relProjectDir.resolve("setup/helper-build-docker-container.sh"), target.getBaseDockerImage(), target.getOsArch()).run();
+                final LogicalProject project = new LogicalProject(absProjectDir, relProjectDir, null);
+
+                projectExecute.execute(target, project, (localExecute, remoteExecute) -> {
+                    localExecute.execute();
+                });
             }
         }
     }
 
-    public void build_native_libs() throws Exception {
-        final Path absProjectDir = relProjectDir.toRealPath();
+    public interface LocalExecute {
+        void execute() throws Exception;
+    }
 
-        log.info("Project dir: {}", absProjectDir);
+    public interface RemoteExecute {
+        void execute(SshSession sshSession) throws Exception;
+    }
 
-        for (Target target : targets) {
-            // what build script will we use?
-            String buildScript = "helper-build-native-libs-linux.sh";
-            if (target.getOs().contains("macos")) {
-                buildScript = "helper-build-native-libs-macos.sh";
+    public interface LocalRemoteExecute {
+        void execute(LocalExecute localExecute, RemoteExecute remoteExecute) throws Exception;
+    }
+
+    public interface ProjectExecute {
+        void execute(Target target, LogicalProject project, LocalRemoteExecute localRemoteExecute) throws Exception;
+    }
+
+    static public class LogicalProject {
+        private final Path absoluteDir;
+        private final Path relativeDir;
+        private final String remoteDir;
+
+        public LogicalProject(Path absoluteDir, Path relativeDir, String remoteDir) {
+            this.absoluteDir = absoluteDir;
+            this.relativeDir = relativeDir;
+            this.remoteDir = remoteDir;
+        }
+
+        public Path getAbsoluteDir() {
+            return absoluteDir;
+        }
+
+        public Path getRelativeDir() {
+            return relativeDir;
+        }
+
+        public String getRemoteDir() {
+            return remoteDir;
+        }
+
+        // helpers
+
+        public String relativePath(String path) {
+            return this.relativeDir.resolve(".").toString() + "/" + path;
+        }
+
+        public String remotePath(String path) {
+            if (this.remoteDir == null) {
+                throw new RuntimeException("Project is NOT remote (no remoteDir)");
             }
-
-            final String artifactRelPath = "tokyocabinet-"+target.getOsArch()+"/src/main/resources/jne/"+target.getOs()+"/"+target.getArch()+"/";
-
-            if (target.getSshHost() != null) {
-                final String remoteProjectDir = "~/remote-build/" + absProjectDir.getFileName().toString();
-                log.info("Remote project dir: {}", remoteProjectDir);
-
-                try (SshSession session = sshConnect("ssh://" + target.getSshHost()).run()) {
-                    log.info("Connected with...");
-
-                    sshExec(session, "uname", "-a").run();
-
-                    log.info("Will rsync current project to remote host...");
-
-                    // sync our project directory to the remote host
-                    exec("rsync", "-avrt", "--delete", "--exclude=.git/", "--exclude=target/", "--progress", absProjectDir+"/", target.getSshHost()+":"+remoteProjectDir+"/").run();
-
-                    if (target.getBaseDockerImage() != null) {
-                        sshExec(session, "docker", "run", "-v", remoteProjectDir+":/project", "tokyocabinet-"+target.getOsArch(), "/project/setup/"+buildScript).run();
-                    } else {
-                        sshExec(session, remoteProjectDir+"/setup/"+buildScript).run();
-                    }
-
-                    // rsync the project target/output to the target project
-                    exec("rsync", "-avrt", "--delete", "--progress", target.getSshHost()+":"+remoteProjectDir+"/target/output/", absProjectDir+"/"+artifactRelPath).run();
-                }
-            } else {
-                // local container
-                exec("docker", "run", "-v", absProjectDir+":/project", "tokyocabinet-"+target.getOsArch(), "/project/setup/"+buildScript).run();
-
-                // rsync the project target/output to the target project
-                exec("rsync", "-avrt", "--delete", "--progress", absProjectDir+"/target/output/", absProjectDir+"/"+artifactRelPath).run();
-            }
+            return this.remoteDir + "/" + path;
         }
     }
 
@@ -161,6 +246,20 @@ public class blaze {
 
         public String getBaseDockerImage() {
             return this.baseDockerImage;
+        }
+
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append(this.getOsArch());
+            if (this.baseDockerImage != null) {
+                sb.append(" with container ");
+                sb.append(this.baseDockerImage);
+            }
+            if (this.sshHost != null) {
+                sb.append(" on host ");
+                sb.append(this.sshHost);
+            }
+            return sb.toString();
         }
 
     }
