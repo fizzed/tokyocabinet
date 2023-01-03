@@ -3,7 +3,7 @@ ARG FROM_IMAGE=does-not-exist
 FROM ${FROM_IMAGE}
 
 RUN apt -y update
-RUN apt -y install build-essential libtool autoconf gzip unzip wget curl iproute2 netcat-openbsd  rsync
+RUN apt -y install build-essential libtool autoconf gzip unzip wget curl iproute2 netcat-openbsd git rsync
 
 # Fix locale and timezones (affects how java code compiles)
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt -y install tzdata locales
