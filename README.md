@@ -1,9 +1,18 @@
 # TokyoCabinet & Native Libs for Java by Fizzed
 
-[![Linux x64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-x64.yaml?branch=master&label=Linux%20x64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-x64.yaml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.fizzed/tokyocabinet?color=blue&style=flat-square)](https://mvnrepository.com/artifact/com.fizzed/tokyocabinet)
+
+[![Java 8](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/java8.yaml?branch=master&label=Java%208&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/java8.yaml)
+[![Java 11](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/java11.yaml?branch=master&label=Java%2011&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/java11.yaml)
+[![Java 17](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/java17.yaml?branch=master&label=Java%2017&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/java17.yaml)
+
+[![Linux x64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/java11.yaml?branch=master&label=Linux%20x64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/java11.yaml)
+[![Linux arm64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-arm64.yaml?branch=master&label=Linux%20arm64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-arm64.yaml)
+[![Linux riscv64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-riscv64.yaml?branch=master&label=Linux%20riscv64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-riscv64.yaml)
+[![Linux MUSL x64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-musl-x64.yaml?branch=master&label=Linux%20MUSL%20x64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-musl-x64.yaml)
+[![Linux MUSL arm64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-musl-arm64.yaml?branch=master&label=Linux%20MUSL%20arm64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-musl-arm64.yaml)
 [![MacOS x64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/macos-x64.yaml?branch=master&label=MacOS%20x64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/macos-x64.yaml)
 ![MacOS arm64](https://img.shields.io/badge/MacOS%20arm64-available-blue)
-[![Maven Central](https://img.shields.io/maven-central/v/com.fizzed/tokyocabinet?color=blue&style=flat-square&)](https://mvnrepository.com/artifact/com.fizzed/tokyocabinet)
 
 TokyoCabinet remains a workhorse key-value store that still represents excellent performance vs. modern popular embedded
 key-value stores such as LevelDB or RocksDB.  This is a published version of the library for Java 8+, along with native libs that 
