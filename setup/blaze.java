@@ -135,7 +135,7 @@ public class blaze {
                     log.info("Will rsync current project to remote host...");
 
                     // sync our project directory to the remote host
-                    exec("rsync", "-avrt", "--delete", "--progress", "--exclude=.git/", "--exclude=target/", absProjectDir+"/", target.getSshHost()+":"+remoteProjectDir+"/").run();
+                    exec("rsync", "-avrt", "--delete", "--progress", "--exclude=.git/", "--exclude=.temp-m2/", "--exclude=target/", absProjectDir+"/", target.getSshHost()+":"+remoteProjectDir+"/").run();
 
                     final LogicalProject project = new LogicalProject(target, containerPrefix, absProjectDir, relProjectDir, remoteProjectDir, container, sshSession);
 
@@ -244,6 +244,7 @@ public class blaze {
 
         public Exec action(String path, Object... arguments) {
             final String actionScript = this.actionPath(path);
+            final String username = System.getProperty("user.name");
 
             // is remote?
             if (this.sshSession != null) {
