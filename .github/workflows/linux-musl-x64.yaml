@@ -11,8 +11,6 @@ jobs:
       - name: Set up Azul JDK 11
         uses: actions/setup-java@v3
         with:
-          java-version: 11
-          distribution: 'zulu'
           jdkFile: https://cdn.azul.com/zulu/bin/zulu11.60.19-ca-jdk11.0.17-linux_musl_x64.tar.gz
           cache: 'maven'
       - name: Test in Maven
