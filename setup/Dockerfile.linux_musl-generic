@@ -2,6 +2,9 @@ ARG FROM_IMAGE=does-not-exist
 
 FROM ${FROM_IMAGE}
 
+ARG USERID=1000
+ARG USERNAME=test
+
 RUN apk add git curl wget gzip build-base rsync
 
 # Install java and maven
@@ -19,6 +22,9 @@ RUN rm -Rf .download-cache
 
 # tokyocabinet specific build dependencies
 RUN apk add zlib-dev bzip2-dev
+
+RUN adduser -D -u ${USERID} ${USERNAME}
+USER ${USERNAME}
 
 ENV JAVA_HOME="/usr/lib/jvm/current"
 ENV M2_HOME="/opt/maven/current"

@@ -2,6 +2,9 @@ ARG FROM_IMAGE=does-not-exist
 
 FROM ${FROM_IMAGE}
 
+ARG USERID=1000
+ARG USERNAME=test
+
 RUN apt -y update
 RUN apt -y install build-essential libtool autoconf gzip unzip wget curl iproute2 netcat-openbsd git rsync
 
@@ -30,6 +33,10 @@ RUN rm -Rf .download-cache
 
 # tokyocabinet specific build dependencies
 RUN apt -y install zlib1g-dev libbz2-dev
+
+RUN groupadd -g ${USERID} ${USERNAME}
+RUN useradd -m -l -u ${USERID} -g ${USERNAME} ${USERNAME}
+USER ${USERNAME}
 
 ENV M2_HOME="/opt/maven/current"
 ENV JAVA_HOME="/usr/lib/jvm/current"

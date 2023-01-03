@@ -35,6 +35,4 @@ make -j4 || exit 1
 
 cp ./libjtokyocabinet.so "$PROJECT_DIR/target/output/"
 
-#strip "$PROJECT_DIR/target/output/libtokyocabinet.so" || exit 1
 strip "$PROJECT_DIR/target/output/libjtokyocabinet.so" || exit 1
-chmod -R 777 "$PROJECT_DIR/target" || exit 1

@@ -2,9 +2,13 @@ import org.slf4j.Logger;
 import java.util.List;
 import static java.util.Arrays.asList;
 import java.nio.file.Path;
+import java.util.function.Supplier;
+import static java.util.stream.Collectors.toList;
 import com.fizzed.blaze.Contexts;
+import com.fizzed.blaze.system.Exec;
 import static com.fizzed.blaze.Contexts.withBaseDir;
 import static com.fizzed.blaze.Contexts.fail;
+import com.fizzed.blaze.Systems;
 import static com.fizzed.blaze.Systems.exec;
 import com.fizzed.blaze.ssh.SshSession;
 import static com.fizzed.blaze.SecureShells.sshConnect;
@@ -16,6 +20,7 @@ public class blaze {
     private final List<Target> targets = asList(
         // Linux x64 (ubuntu 16.04, glibc 2.23+)
         new Target("linux", "x64", null, "amd64/ubuntu:16.04"),
+        //new Target("linux", "x64", null, null), // fully local
 
         // Linux arm64 (ubuntu 16.04, glibc 2.23+)
         new Target("linux", "arm64", "bmh-build-arm64-ubuntu22-1", "arm64v8/ubuntu:16.04"),
@@ -45,87 +50,74 @@ public class blaze {
 
     public void build_containers() throws Exception {
         this.execute((target, project, executor) -> {
-            executor.execute(
-                // local execute
-                () -> {
-                    exec(project.relativePath("setup/helper-build-docker-container.sh"), target.getBaseDockerImage(), target.getOsArch()).run();
-                },
-                // remote execute
-                (sshSession) -> {
-                    // remote in docker execute
-                    if (target.getBaseDockerImage() != null) {
-                        sshExec(sshSession, project.remotePath("setup/helper-build-docker-container.sh"), target.getBaseDockerImage(), target.getOsArch()).run();
-                    } else {
-                        // remote (non docker) execute
-                        // nothing to do, project already synced
-                    }
-                }
-            );
+            if (project.hasContainer()) {
+                project.exec("setup/build-docker-container-action.sh", target.getBaseDockerImage(), project.getContainerName()).run();
+            }
         });
-    }
-
-    private String resolveBuildScriptFunc(Target target) {
-        switch (target.getOs()) {
-            case "macos":
-                return "setup/helper-build-native-libs-macos.sh";
-            case "linux":
-            case "linux_musl":
-                return "setup/helper-build-native-libs-linux.sh";
-            default:
-                throw new RuntimeException("Unsupported os " + target.getOs());
-        }
     }
 
     public void build_native_libs() throws Exception {
         this.execute((target, project, executor) -> {
-            final String buildScript = this.resolveBuildScriptFunc(target);
             final String artifactRelPath = "tokyocabinet-" + target.getOsArch() + "/src/main/resources/jne/" + target.getOs() + "/" + target.getArch() + "/";
 
-            executor.execute(
-                // local execute
-                () -> {
-                    exec("docker", "run", "-v", project.getAbsoluteDir() + ":/project", "tokyocabinet-" + target.getOsArch(), "/project/" + buildScript).run();
+            String buildScript = "setup/build-native-lib-linux-action.sh";
+            if (target.getOs().equals("macos")) {
+                buildScript = "setup/build-native-lib-macos-action.sh";
+            }
 
-                    // rsync the project target/output to the target project
-                    exec("rsync", "-avrt", "--delete", "--progress", project.relativePath("target/output/"), project.relativePath(artifactRelPath)).run();
-                },
-                // remote execute
-                (sshSession) -> {
-                    // remote in docker execute
-                    if (target.getBaseDockerImage() != null) {
-                        sshExec(sshSession, "docker", "run", "-v", project.getRemoteDir() + ":/project", "tokyocabinet-" + target.getOsArch(), "/project/" + buildScript).run();
-                    } else {
-                        // remote (non docker) execute
-                        sshExec(sshSession, project.remotePath(buildScript)).run();
-                    }
-
-                    // rsync the project target/output to the target project
-                    exec("rsync", "-avrt", "--delete", "--progress", target.getSshHost() + ":" + project.remotePath("target/output/"), project.relativePath(artifactRelPath)).run();
-                }
-            );
+            project.action(buildScript).run();
+            project.rsync("target/output/", artifactRelPath).run();
         });
     }
+
+    public void test_containers() throws Exception {
+        this.execute((target, project, executor) -> {
+            project.action("setup/test-project-action.sh").run();
+        });
+    }
+
+
+
+
+
+    //
+    // Project Build Farm
+    //
 
     public void execute(ProjectExecute projectExecute) throws Exception {
         final Path relProjectDir = withBaseDir("..");
         final Path absProjectDir = relProjectDir.toRealPath();
+        final String containerPrefix = Contexts.config().value("container-prefix").get();
+        final String targetsFilter = Contexts.config().value("targets").orNull();
+
+        // filtered targets?
+        List<Target> _targets = targets;
+        if (targetsFilter != null && !targetsFilter.trim().equals("")) {
+            final String _targetsFilter = ","+targetsFilter+",";
+            _targets = targets.stream()
+                .filter(v -> _targetsFilter.contains(","+v.getOsArch()+","))
+                .collect(toList());
+        }
 
         log.info("=====================================================");
         log.info("Project info");
         log.info("  relativeDir: {}", relProjectDir);
         log.info("  absoluteDir: {}", absProjectDir);
+        log.info("  containerPrefix: {}", containerPrefix);
         log.info("  targets:");
-        for (Target target : targets) {
+        for (Target target : _targets) {
             log.info("    {}", target);
         }
         log.info("");
 
-        for (Target target : targets) {
+        for (Target target : _targets) {
             log.info("=====================================================");
             log.info("Executing for");
             log.info("  os-arch: {}", target.getOsArch());
             log.info("  ssh: {}", target.getSshHost());
             log.info("  baseDockerImage: {}", target.getBaseDockerImage());
+
+            final boolean container = target.getBaseDockerImage() != null;
 
             if (target.getSshHost() != null) {
                 final String remoteProjectDir = "~/remote-build/" + absProjectDir.getFileName().toString();
@@ -145,14 +137,14 @@ public class blaze {
                     // sync our project directory to the remote host
                     exec("rsync", "-avrt", "--delete", "--progress", "--exclude=.git/", "--exclude=target/", absProjectDir+"/", target.getSshHost()+":"+remoteProjectDir+"/").run();
 
-                    final LogicalProject project = new LogicalProject(absProjectDir, relProjectDir, remoteProjectDir);
+                    final LogicalProject project = new LogicalProject(target, containerPrefix, absProjectDir, relProjectDir, remoteProjectDir, container, sshSession);
 
                     projectExecute.execute(target, project, (localExecute, remoteExecute) -> {
                         remoteExecute.execute(sshSession);
                     });
                 }
             } else {
-                final LogicalProject project = new LogicalProject(absProjectDir, relProjectDir, null);
+                final LogicalProject project = new LogicalProject(target, containerPrefix, absProjectDir, relProjectDir, null, container, null);
 
                 projectExecute.execute(target, project, (localExecute, remoteExecute) -> {
                     localExecute.execute();
@@ -178,14 +170,30 @@ public class blaze {
     }
 
     static public class LogicalProject {
+        private final Target target;
+        private final String containerPrefix;
         private final Path absoluteDir;
         private final Path relativeDir;
         private final String remoteDir;
+        private final boolean container;
+        private final SshSession sshSession;
 
-        public LogicalProject(Path absoluteDir, Path relativeDir, String remoteDir) {
+        public LogicalProject(Target target, String containerPrefix, Path absoluteDir, Path relativeDir, String remoteDir, boolean container, SshSession sshSession) {
+            this.target = target;
+            this.containerPrefix = containerPrefix;
             this.absoluteDir = absoluteDir;
             this.relativeDir = relativeDir;
             this.remoteDir = remoteDir;
+            this.container = container;
+            this.sshSession = sshSession;
+        }
+
+        public String getContainerName() {
+            return this.containerPrefix + "-" + target.getOsArch();
+        }
+
+        public String getContainerPrefix() {
+            return containerPrefix;
         }
 
         public Path getAbsoluteDir() {
@@ -200,6 +208,14 @@ public class blaze {
             return remoteDir;
         }
 
+        public SshSession getSshSession() {
+            return sshSession;
+        }
+
+        public boolean hasContainer() {
+            return this.container;
+        }
+
         // helpers
 
         public String relativePath(String path) {
@@ -211,6 +227,64 @@ public class blaze {
                 throw new RuntimeException("Project is NOT remote (no remoteDir)");
             }
             return this.remoteDir + "/" + path;
+        }
+
+        public String actionPath(String path) {
+            // is in container?
+            if (this.container) {
+                return "/project/" + path;
+            } else if (this.sshSession != null) {
+                // a remote path then
+                return this.remotePath(path);
+            } else {
+                // otherwise, local host path
+                return this.relativePath(path);
+            }
+        }
+
+        public Exec action(String path, Object... arguments) {
+            final String actionScript = this.actionPath(path);
+
+            // is remote?
+            if (this.sshSession != null) {
+                if (this.container) {
+                    // in container too?
+                    return sshExec(sshSession, "docker", "run", "-v", this.getRemoteDir()+":/project", this.getContainerName(), actionScript).args(arguments);
+                } else {
+                    // remote path
+                    return sshExec(sshSession, actionScript).args(arguments);
+                }
+            } else {
+                // on local machine
+                if (this.container) {
+                    // in container too?
+                    return exec("docker", "run", "-v", this.getAbsoluteDir()+":/project", this.getContainerName(), actionScript).args(arguments);
+                } else {
+                    // fully local
+                    return exec(actionScript).args(arguments);
+                }
+            }
+        }
+
+        public Exec exec(String path, Object... arguments) {
+            final String actionScript = this.sshSession != null ? this.remotePath(path) : this.relativePath(path);
+            // is remote?
+            if (this.sshSession != null) {
+                return sshExec(sshSession, actionScript).args(arguments);
+            } else {
+                return Systems.exec(actionScript).args(arguments);
+            }
+        }
+
+        public Exec rsync(String sourcePath, String destPath) {
+            // is remote?
+            if (this.sshSession != null) {
+                // rsync the project target/output to the target project
+                return Systems.exec("rsync", "-avrt", "--delete", "--progress", this.target.getSshHost()+":"+this.remotePath(sourcePath), this.relativePath(destPath));
+            } else {
+                // local execute
+                return Systems.exec("rsync", "-avrt", "--delete", "--progress", this.relativePath(sourcePath), this.relativePath(destPath));
+            }
         }
     }
 
