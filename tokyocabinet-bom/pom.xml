@@ -61,6 +61,13 @@
                 <artifactId>tokyocabinet-macos-arm64</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.fizzed</groupId>
+                <artifactId>tokyocabinet-all-natives</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     

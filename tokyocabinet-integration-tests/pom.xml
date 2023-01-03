@@ -24,61 +24,16 @@
         </plugins>
     </build>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.fizzed</groupId>
-                <artifactId>tokyocabinet-bom</artifactId>
-                <version>${project.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
 
-        <dependency>
-            <groupId>com.fizzed</groupId>
-            <artifactId>tokyocabinet-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fizzed</groupId>
-            <artifactId>tokyocabinet-linux-x64</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fizzed</groupId>
-            <artifactId>tokyocabinet-linux-arm64</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fizzed</groupId>
-            <artifactId>tokyocabinet-linux_musl-x64</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fizzed</groupId>
-            <artifactId>tokyocabinet-linux_musl-arm64</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fizzed</groupId>
-            <artifactId>tokyocabinet-linux-riscv64</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fizzed</groupId>
-            <artifactId>tokyocabinet-macos-x64</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fizzed</groupId>
-            <artifactId>tokyocabinet-macos-arm64</artifactId>
-        </dependency>
-
         <!-- testing -->
+
+        <dependency>
+            <groupId>com.fizzed</groupId>
+            <artifactId>tokyocabinet-all-natives</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
