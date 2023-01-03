@@ -14,10 +14,12 @@ make -j4 || exit 1
 
 # we need to get rid of symlinked version
 # this helps prevent java load library from looking for the specific version
-cp ./libtokyocabinet.dylib ./temp.dylib
-rm -Rf ./libtokyocabinet*dylib
-mv ./temp.dylib ./libtokyocabinet.dylib
-cp ./libtokyocabinet.dylib "$PROJECT_DIR/target/output/"
+#cp ./libtokyocabinet.dylib ./temp.dylib
+#rm -Rf ./libtokyocabinet*dylib
+#mv ./temp.dylib ./libtokyocabinet.dylib
+#cp ./libtokyocabinet.dylib "$PROJECT_DIR/target/output/"
+# we must force the use of the .a lib to static link
+rm ./*.dylib
 
 export TCDIR="$PWD"
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home
@@ -38,6 +40,6 @@ make -j4 || exit 1
 
 cp ./libjtokyocabinet.dylib "$PROJECT_DIR/target/output/"
 
-strip -u -r "$PROJECT_DIR/target/output/libtokyocabinet.dylib" || exit 1
+#strip -u -r "$PROJECT_DIR/target/output/libtokyocabinet.dylib" || exit 1
 strip -u -r "$PROJECT_DIR/target/output/libjtokyocabinet.dylib" || exit 1
 chmod -R 777 "$PROJECT_DIR/target" || exit 1

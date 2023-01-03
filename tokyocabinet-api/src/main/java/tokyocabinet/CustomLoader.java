@@ -16,7 +16,6 @@ public class CustomLoader {
     synchronized (CustomLoader.class) {
       if (!LOADED) {
         LOADED = true;
-        JNE.loadLibrary("tokyocabinet");
         JNE.loadLibrary("jtokyocabinet");
       }
     }
