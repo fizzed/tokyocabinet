@@ -29,8 +29,6 @@ RUN chmod +x ./bootstrap-maven.sh
 RUN ./bootstrap-maven.sh
 RUN rm -f ./bootstrap-maven.sh
 
-RUN rm -Rf .download-cache
-
 # tokyocabinet specific build dependencies
 RUN apt -y install zlib1g-dev libbz2-dev
 

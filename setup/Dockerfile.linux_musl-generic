@@ -18,8 +18,6 @@ RUN chmod +x ./bootstrap-maven.sh
 RUN ./bootstrap-maven.sh
 RUN rm -f ./bootstrap-maven.sh
 
-RUN rm -Rf .download-cache
-
 # tokyocabinet specific build dependencies
 RUN apk add zlib-dev bzip2-dev
 
