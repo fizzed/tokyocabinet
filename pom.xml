@@ -32,8 +32,9 @@
         <module>tokyocabinet-macos-x64</module>
         <module>tokyocabinet-macos-arm64</module>
         <module>tokyocabinet-bom</module>
-        <module>tokyocabinet-all-natives</module>
         <module>tokyocabinet-integration-tests</module>
+        <!-- this module is last so that nexus sonatype deploys since integration-tests is skipped for deploy -->
+        <module>tokyocabinet-all-natives</module>
     </modules>
 
     <dependencyManagement>
@@ -53,13 +54,7 @@
             </dependency>
             
             <!-- testing -->
-            
-            <dependency>
-                <groupId>com.fizzed</groupId>
-                <artifactId>crux-util</artifactId>
-                <version>1.0.13</version>
-            </dependency>
-            
+
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -79,15 +74,9 @@
             </dependency>
             
             <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>2.12.0</version>
-            </dependency>
-            
-            <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.1.7</version>
+                <version>1.2.3</version>
             </dependency>
 
         </dependencies>
