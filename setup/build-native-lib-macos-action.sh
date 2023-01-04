@@ -17,7 +17,6 @@ make -j4 || exit 1
 rm ./*.dylib
 
 export TCDIR="$PWD"
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home
 # configure can't find tokyocabinet OR java/include/darwin correctly
 # since this is clang, we need to setup the lib and include paths
 export LIBRARY_PATH="$LIBRARY_PATH:$TCDIR"
