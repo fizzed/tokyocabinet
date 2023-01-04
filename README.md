@@ -21,12 +21,52 @@ are automatically extracted at runtime.
 The Java library is as unmodified as possible from the original TokyoCabinet, but a few changes were made to automatically
 extract the library at runtime.
 
+## Usage
+
+Add the following to your maven POM file for Linux x64
+
 ```xml
 <dependency>
   <groupId>com.fizzed</groupId>
   <artifactId>tokyocabinet-linux-x64</artifactId>
   <version>VERSION-HERE</version>
 </dependency>
+```
+
+Or MacOS arm64 (Apple silicon)
+
+```xml
+<dependency>
+  <groupId>com.fizzed</groupId>
+  <artifactId>tokyocabinet-macos-arm64</artifactId>
+  <version>VERSION-HERE</version>
+</dependency>
+```
+
+Or for all operating system & arches
+
+```xml
+<dependency>
+  <groupId>com.fizzed</groupId>
+  <artifactId>tokyocabinet-all-natives</artifactId>
+  <version>VERSION-HERE</version>
+</dependency>
+```
+
+To simplify versions, you may optionally want to import our BOM (bill of materials)
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.fizzed</groupId>
+            <artifactId>tokyocabinet-bom</artifactId>
+            <version>VERSION-HERE</version>
+            <scope>import</scope>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
 ```
 
 ## Native Libs
