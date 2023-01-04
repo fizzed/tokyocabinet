@@ -14,8 +14,10 @@ jobs:
           cache: 'maven'
       - uses: uraimo/run-on-arch-action@v2
         with:
-          arch: aarch64
-          distro: alpine_latest
+          arch: none
+          distro: none
+          base_image: arm64v8/alpine:3.16
+          shell: /bin/sh
           githubToken: ${{ github.token }}
           dockerRunArgs: |
             --volume "~/.m2:/root/.m2" --volume "${PWD}:/mnt"

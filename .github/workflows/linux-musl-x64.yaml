@@ -16,7 +16,7 @@ jobs:
         with:
           arch: none
           distro: none
-          base_image: amd64/alpine:latest
+          base_image: amd64/alpine:3.16
           shell: /bin/sh
           githubToken: ${{ github.token }}
           dockerRunArgs: |
