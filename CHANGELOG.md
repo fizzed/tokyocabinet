@@ -1,3 +1,8 @@
+## 0.0.12 - 2023-01-04
+ - Based on TokyoCabinet 1.4.48 and TokyoCabinet-Java 1.24
+ - Bump jne v3.2.0
+ - New build system, many new architectures supported
+
 ## 0.0.10 - 2022-12-21
  - Based on TokyoCabinet 1.4.48 and TokyoCabinet-Java 1.24
  - Bump jne v3.0.2

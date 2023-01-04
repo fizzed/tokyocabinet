@@ -8,7 +8,7 @@
 
 [![Linux x64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/java11.yaml?branch=master&label=Linux%20x64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/java11.yaml)
 [![Linux arm64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-arm64.yaml?branch=master&label=Linux%20arm64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-arm64.yaml)
-[![Linux armhf](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-armhf.yaml?branch=master&label=Linux%armhf&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-armhf.yaml)
+[![Linux armhf](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-armhf.yaml?branch=master&label=Linux%20armhf&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-armhf.yaml)
 [![Linux riscv64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-riscv64.yaml?branch=master&label=Linux%20riscv64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-riscv64.yaml)
 [![Linux MUSL x64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-musl-x64.yaml?branch=master&label=Linux%20MUSL%20x64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-musl-x64.yaml)
 [![Linux MUSL arm64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-musl-arm64.yaml?branch=master&label=Linux%20MUSL%20arm64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-musl-arm64.yaml)
