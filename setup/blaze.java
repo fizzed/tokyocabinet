@@ -27,6 +27,9 @@ public class blaze extends BlazeBuildx {
             // Linux arm64 (ubuntu 16.04, glibc 2.23+)
             new Target("linux", "arm64", "bmh-build-arm64-ubuntu22-1", "arm64v8/ubuntu:16.04"),
 
+            // Linux armhf (ubuntu 16.04, glibc 2.23+)
+            new Target("linux", "armhf", null, "arm32v7/ubuntu:16.04"),
+
             // Linux MUSL x64 (alpine 3.11)
             new Target("linux_musl", "x64", null, "amd64/alpine:3.11"),
 

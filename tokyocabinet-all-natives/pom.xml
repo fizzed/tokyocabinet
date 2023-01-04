@@ -1,7 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.fizzed</groupId>
     <artifactId>tokyocabinet-all-natives</artifactId>
     <name>tokyocabinet-all-natives</name>
     <packaging>jar</packaging>
@@ -43,6 +42,11 @@
 
         <dependency>
             <groupId>com.fizzed</groupId>
+            <artifactId>tokyocabinet-linux-armhf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fizzed</groupId>
             <artifactId>tokyocabinet-linux_musl-x64</artifactId>
         </dependency>
 
@@ -64,6 +68,26 @@
         <dependency>
             <groupId>com.fizzed</groupId>
             <artifactId>tokyocabinet-macos-arm64</artifactId>
+        </dependency>
+
+        <!-- testing -->
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>java-hamcrest</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>test</scope>
         </dependency>
         
     </dependencies>
