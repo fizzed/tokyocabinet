@@ -1,12 +1,20 @@
-#!/bin/sh
+#!/bin/sh -l
+# Use a shell as though we logged in
 
 BASEDIR=$(dirname "$0")
 cd "$BASEDIR/.." || exit 1
 PROJECT_DIR=$PWD
 
+BUILDOS=$1
+BUILDARCH=$2
+
+if [ -z "${BUILDOS}" ] || [ -z "${BUILDOS}" ]; then
+  echo "Usage: script [os] [arch]"
+  exit 1
+fi
+
 mkdir -p target || exit 1
 rsync -avrt --delete ./native/ ./target/ || exit 1
-mkdir -p target/output
 
 cd ./target/tokyocabinet
 ./configure || exit 1
@@ -32,8 +40,10 @@ sed -i -e "s/-source 1.4/-source 1.8/" Makefile
 
 make -j4 || exit 1
 
-cp ./libjtokyocabinet.dylib "$PROJECT_DIR/target/output/"
+TARGET_LIB=libjtokyocabinet.dylib
+OUTPUT_DIR="../../tokyocabinet-${BUILDOS}-${BUILDARCH}/src/main/resources/jne/${BUILDOS}/${BUILDARCH}"
+strip -u -r ./$TARGET_LIB || exit 1
+cp ./$TARGET_LIB "$OUTPUT_DIR" || exit 1
 
-#strip -u -r "$PROJECT_DIR/target/output/libtokyocabinet.dylib" || exit 1
-strip -u -r "$PROJECT_DIR/target/output/libjtokyocabinet.dylib" || exit 1
-chmod -R 777 "$PROJECT_DIR/target" || exit 1
+echo "Copied ./$TARGET_LIB to $OUTPUT_DIR"
+echo "Done!"
