@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/sh -l
+# Use a shell as though we logged in
 
 BASEDIR=$(dirname "$0")
 cd "$BASEDIR/.." || exit 1
@@ -9,13 +10,15 @@ USERNAME=${USER}
 
 DOCKER_IMAGE="$1"
 CONTAINER_NAME="$2"
+BUILDOS=$3
+BUILDARCH=$4
 
 echo "Building docker container..."
 echo " dockerImage: $DOCKER_IMAGE"
-echo " containerName: CONTAINER_NAME"
+echo " containerName: $CONTAINER_NAME"
 
 DOCKERFILE="setup/Dockerfile.linux-generic"
-if [[ "$CONTAINER_NAME" == *"linux_musl"* ]]; then
+if [ $BUILDOS = "linux_musl" ]; then
   DOCKERFILE="setup/Dockerfile.linux_musl-generic"
 fi
 
