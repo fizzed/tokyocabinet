@@ -17,25 +17,8 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-RUN echo "Installing JDK..." ; \
-if [ $(arch) = "riscv64" ]; then \
-  apt -y install openjdk-11-jdk-headless ; \
-  ln -s /usr/lib/jvm/java-11-openjdk-riscv64 /usr/lib/jvm/current ; \
-elif [ $(arch) = "armv7l" ]; then \
-  apt -y install openjdk-8-jdk-headless ; \
-  ln -s /usr/lib/jvm/java-8-openjdk-armhf /usr/lib/jvm/current ; \
-else \
-  curl -O https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-java.sh ; \
-  chmod +x bootstrap-java.sh ; \
-  ./bootstrap-java.sh --slim --default --version=11 ; \
-  rm -f ./bootstrap-java.sh ; \
-fi
-
-RUN echo "Installing Maven..." ; \
-  wget https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-maven.sh ; \
-  chmod +x ./bootstrap-maven.sh ; \
-  ./bootstrap-maven.sh ; \
-  rm -f ./bootstrap-maven.sh
+RUN curl -s https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-java.sh | sh -s -- --version=11
+RUN curl -s https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-maven.sh | sh
 
 # tokyocabinet specific build dependencies
 RUN apt -y install zlib1g-dev libbz2-dev
@@ -47,3 +30,5 @@ USER ${USERNAME}
 ENV M2_HOME="/opt/maven/current"
 ENV JAVA_HOME="/usr/lib/jvm/current"
 ENV PATH="${JAVA_HOME}/bin:${M2_HOME}/bin:${PATH}"
+# this fixes the "spawn" error in latest java version
+ENV JDK_JAVA_OPTIONS="-Djdk.lang.Process.launchMechanism=vfork"

@@ -19,5 +19,6 @@ case $PROJECT_DIR in /project*)
 esac
 
 env
+ls -la
 
 mvn test
