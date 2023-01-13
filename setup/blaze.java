@@ -19,12 +19,11 @@ public class blaze {
 
     private final List<Target> targets = asList(
         // Linux arm64 (ubuntu 16.04, glibc 2.23+)
-        /*new Target("linux", "armhf")
-            //.setHost("bmh-jjlauer-2")
-            .setContainerImage("amd64/ubuntu:16.04")*/
+        new Target("linux", "armhf")
+            .setContainerImage("amd64/ubuntu:16.04")
 
-        new Target("linux", "riscv64")
-            .setContainerImage("amd64/ubuntu:18.04")
+        /*new Target("linux", "riscv64")
+            .setContainerImage("amd64/ubuntu:18.04")*/
 
             // Linux x64 (ubuntu 16.04, glibc 2.23+)
         /*new Target("linux", "x64").setContainerImage("amd64/ubuntu:16.04"),

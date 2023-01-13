@@ -20,7 +20,9 @@ BUILDTARGET=x86_64-linux-gnu
 if [ $BUILDARCH = "arm64" ]; then
   BUILDTARGET=aarch64-linux-gnu
 elif [ $BUILDARCH = "armhf" ]; then
-  BUILDTARGET=arm-linux-gnueabihf
+  #BUILDTARGET=arm-linux-gnueabihf
+  # stupid raspbian claims its hard-float but isn't compatible
+  BUILDTARGET=arm-linux-gnueabi
 elif [ $BUILDARCH = "armel" ]; then
   BUILDTARGET=arm-linux-gnueabi
 elif [ $BUILDARCH = "riscv64" ]; then
