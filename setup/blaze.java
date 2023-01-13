@@ -18,9 +18,13 @@ import com.fizzed.buildx.*;
 public class blaze {
 
     private final List<Target> targets = asList(
-        // Linux x64 (ubuntu 16.04, glibc 2.23+)
-        new Target("linux", "x64").setContainerImage("amd64/ubuntu:16.04"),
-        //new Target("linux", "x64", null, null), // fully local
+        // Linux arm64 (ubuntu 16.04, glibc 2.23+)
+        new Target("linux", "arm64")
+            .setHost("bmh-jjlauer-2")
+            .setContainerImage("amd64/ubuntu:16.04")
+
+            // Linux x64 (ubuntu 16.04, glibc 2.23+)
+        /*new Target("linux", "x64").setContainerImage("amd64/ubuntu:16.04"),
 
         // Linux arm64 (ubuntu 16.04, glibc 2.23+)
         new Target("linux", "arm64").setHost("bmh-build-arm64-ubuntu22-1").setContainerImage("arm64v8/ubuntu:16.04"),
@@ -41,7 +45,7 @@ public class blaze {
         new Target("macos", "arm64").setHost("bmh-build-arm64-macos12-1"),
 
         // Linux riscv64 (ubuntu 20.04, glibc 2.31+)
-        new Target("linux", "riscv64").setContainerImage("riscv64/ubuntu:20.04")
+        new Target("linux", "riscv64").setContainerImage("riscv64/ubuntu:20.04")*/
 
         // potentially others could be built too
         // arm32v5/debian linux-armel
@@ -54,7 +58,7 @@ public class blaze {
         new Buildx(targets)
             .execute((target, project) -> {
                 if (project.hasContainer()) {
-                    project.exec("setup/build-docker-container-action.sh", target.getContainerImage(), project.getContainerName(), target.getOs(), target.getArch()).run();
+                    project.exec("setup/build-docker-container-action2.sh", target.getContainerImage(), project.getContainerName(), target.getOs(), target.getArch()).run();
                 }
             });
     }
