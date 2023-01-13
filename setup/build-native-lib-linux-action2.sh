@@ -30,7 +30,7 @@ else
   exit 1
 fi
 
-ls -la /lib/
+export CFLAGS="$CFLAGS -Wa,--noexecstack"
 
 cd ./target/tokyocabinet
 ./configure --host $BUILDTARGET || exit 1
