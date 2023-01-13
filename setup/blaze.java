@@ -19,9 +19,12 @@ public class blaze {
 
     private final List<Target> targets = asList(
         // Linux arm64 (ubuntu 16.04, glibc 2.23+)
-        new Target("linux", "arm64")
-            .setHost("bmh-jjlauer-2")
-            .setContainerImage("amd64/ubuntu:16.04")
+        /*new Target("linux", "armhf")
+            //.setHost("bmh-jjlauer-2")
+            .setContainerImage("amd64/ubuntu:16.04")*/
+
+        new Target("linux", "riscv64")
+            .setContainerImage("amd64/ubuntu:18.04")
 
             // Linux x64 (ubuntu 16.04, glibc 2.23+)
         /*new Target("linux", "x64").setContainerImage("amd64/ubuntu:16.04"),
@@ -66,7 +69,7 @@ public class blaze {
     public void build_native_libs() throws Exception {
         new Buildx(targets)
             .execute((target, project) -> {
-                String buildScript = "setup/build-native-lib-linux-action.sh";
+                String buildScript = "setup/build-native-lib-linux-action2.sh";
                 if (target.getOs().equals("macos")) {
                     buildScript = "setup/build-native-lib-macos-action.sh";
                 }
