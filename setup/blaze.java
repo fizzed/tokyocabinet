@@ -19,7 +19,7 @@ public class blaze {
 
     private final List<Target> targets = asList(
         // Linux arm64 (ubuntu 16.04, glibc 2.23+)
-        new Target("linux", "armel")
+        new Target("linux_musl", "arm64")
             .setContainerImage("amd64/ubuntu:16.04")
 
         /*new Target("linux", "riscv64")

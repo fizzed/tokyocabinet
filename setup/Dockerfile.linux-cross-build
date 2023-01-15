@@ -25,9 +25,25 @@ RUN apt -y install zlib1g-dev libbz2-dev
 
 RUN apt -y install gcc-arm-linux-gnueabi g++-arm-linux-gnueabi binutils-arm-linux-gnueabi \
   gcc-arm-linux-gnueabihf g++-arm-linux-gnueabi binutils-arm-linux-gnueabihf \
-  gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binutils-aarch64-linux-gnu \
-  gcc-riscv64-linux-gnu g++-riscv64-linux-gnu binutils-riscv64-linux-gnu
+  gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binutils-aarch64-linux-gnu
 
+# Only available on ubuntu 18.04
+RUN if [ "${FROM_IMAGE}" = "amd64/ubuntu:18.04" ]; then apt -y install gcc-riscv64-linux-gnu g++-riscv64-linux-gnu binutils-riscv64-linux-gnu; fi
+
+# Cross compilers for various architectures w/ musl (https://musl.cc/#binaries)
+RUN mkdir -p /opt
+
+# Install x86_64-linux-musl
+RUN wget https://musl.cc/x86_64-linux-musl-cross.tgz && \
+  tar zxvf x86_64-linux-musl-cross.tgz && \
+  mv x86_64-linux-musl-cross /opt/
+RUN chmod 777 /opt/x86_64-linux-musl-cross
+
+# Install aarch64-linux-musl
+RUN wget https://musl.cc/aarch64-linux-musl-cross.tgz && \
+  tar zxvf aarch64-linux-musl-cross.tgz && \
+  mv aarch64-linux-musl-cross /opt/
+RUN chmod 777 /opt/aarch64-linux-musl-cross
 
 RUN groupadd -g ${USERID} ${USERNAME}
 RUN useradd -m -l -u ${USERID} -g ${USERNAME} ${USERNAME}
@@ -35,6 +51,6 @@ USER ${USERNAME}
 
 ENV M2_HOME="/opt/maven/current"
 ENV JAVA_HOME="/usr/lib/jvm/current"
-ENV PATH="${JAVA_HOME}/bin:${M2_HOME}/bin:${PATH}"
+ENV PATH="${JAVA_HOME}/bin:${M2_HOME}/bin:${PATH}:/opt/x86_64-linux-musl-cross/bin:/opt/aarch64-linux-musl-cross/bin"
 # this fixes the "spawn" error in latest java version
 ENV JDK_JAVA_OPTIONS="-Djdk.lang.Process.launchMechanism=vfork"
