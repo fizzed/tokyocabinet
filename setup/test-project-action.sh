@@ -1,8 +1,9 @@
 #!/bin/sh -l
 # Use a shell as though we logged in
+set -e
 
 BASEDIR=$(dirname "$0")
-cd "$BASEDIR/.." || exit 1
+cd "$BASEDIR/.."
 PROJECT_DIR=$PWD
 
 # fix path on stupid macos
