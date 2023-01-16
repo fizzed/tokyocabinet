@@ -15,17 +15,18 @@ jobs:
           cache: 'maven'
       - uses: uraimo/run-on-arch-action@v2
         with:
-          arch: riscv64
-          distro: ubuntu20.04
-          githubToken: ${{ github.token }}
+          arch: none
+          distro: none
+          base_image: fizzed/buildx:riscv64-ubuntu20-jdk19
+          shell: /bin/sh
+          #githubToken: ${{ github.token }}
           dockerRunArgs: |
             --volume "~/.m2:/root/.m2" --volume "${PWD}:/mnt"
-          install: |
-            apt update
-            apt -y install git curl wget gzip libatomic1
-            curl -s https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-java.sh | sh -s -- --version=19
-            curl -s https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-maven.sh | sh
+          #install: |
+          #  apt update
+          #  apt -y install git curl wget gzip libatomic1
+          #  curl -s https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-java.sh | sh -s -- --version=19
+          #  curl -s https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-maven.sh | sh
           run: |
-            export PATH=$PATH:/usr/lib/jvm/current/bin:/opt/maven/current/bin
             cd /mnt
             mvn test
