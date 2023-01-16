@@ -15,18 +15,11 @@ jobs:
           cache: 'maven'
       - uses: uraimo/run-on-arch-action@v2
         with:
-          arch: aarch64
-          distro: ubuntu18.04
-          githubToken: ${{ github.token }}
+          arch: none
+          distro: none
+          base_image: fizzed/buildx:arm64v8-ubuntu16-jdk11
           dockerRunArgs: |
             --volume "~/.m2:/root/.m2" --volume "${PWD}:/mnt"
-          install: |
-            apt update
-            apt -y install openjdk-11-jdk-headless git curl wget gzip
-            wget https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-maven.sh
-            chmod +x ./bootstrap-maven.sh
-            ./bootstrap-maven.sh
           run: |
-            export PATH=$PATH:/opt/maven/current/bin
             cd /mnt
             mvn test

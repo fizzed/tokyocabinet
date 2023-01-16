@@ -17,17 +17,10 @@ jobs:
         with:
           arch: none
           distro: none
-          base_image: amd64/alpine:3.16
+          base_image: fizzed/buildx:amd64-alpine3.11-jdk11
           shell: /bin/sh
-          githubToken: ${{ github.token }}
           dockerRunArgs: |
             --volume "~/.m2:/root/.m2" --volume "${PWD}:/mnt"
-          install: |
-            apk add openjdk11-jdk git curl wget gzip
-            wget https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-maven.sh
-            chmod +x ./bootstrap-maven.sh
-            ./bootstrap-maven.sh
           run: |
-            export PATH=$PATH:/opt/maven/current/bin
             cd /mnt
             mvn test

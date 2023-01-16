@@ -9,6 +9,7 @@
 [![Linux x64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/java11.yaml?branch=master&label=Linux%20x64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/java11.yaml)
 [![Linux arm64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-arm64.yaml?branch=master&label=Linux%20arm64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-arm64.yaml)
 [![Linux armhf](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-armhf.yaml?branch=master&label=Linux%20armhf&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-armhf.yaml)
+[![Linux armel](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-armel.yaml?branch=master&label=Linux%20armel&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-armel.yaml)
 [![Linux riscv64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-riscv64.yaml?branch=master&label=Linux%20riscv64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-riscv64.yaml)
 [![Linux MUSL x64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-musl-x64.yaml?branch=master&label=Linux%20MUSL%20x64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-musl-x64.yaml)
 [![Linux MUSL arm64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-musl-arm64.yaml?branch=master&label=Linux%20MUSL%20arm64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-musl-arm64.yaml)
@@ -82,9 +83,10 @@ Zip and Bzip2 libraries must be installed for this version to run.
 | Linux x64        | tokyocabinet-linux-x64        | built on ubuntu 16.04, glibc 2.23 |
 | Linux arm64      | tokyocabinet-linux-arm64      | built on ubuntu 16.04, glibc 2.23 |
 | Linux armhf      | tokyocabinet-linux-armhf      | built on ubuntu 16.04, glibc 2.23 |
+| Linux armel      | tokyocabinet-linux-armel      | built on ubuntu 16.04, glibc 2.23 |
 | Linux MUSL x64   | tokyocabinet-linux_musl-x64   | built on alpine 3.11              |
 | Linux MUSL arm64 | tokyocabinet-linux_musl-arm64 | built on alpine 3.11              |
-| Linux riscv64    | tokyocabinet-linux-riscv64    | built on ubuntu 20.04, glibc 2.31 |
+| Linux riscv64    | tokyocabinet-linux-riscv64    | built on ubuntu 18.04, glibc 2.31 |
 | MacOS x64        | tokyocabinet-macos-x64        | built on macos 10.13 high sierra  |
 | MacOS arm64      | tokyocabinet-macos-arm64      | built on macos 12 monterey        |
 
@@ -99,8 +101,8 @@ To build containers, you'll want to edit setup/blaze.java and comment out/edit w
 or potentially change them running on a remote machine via SSH.  Once you're happy with what you want to build for:
 
      java -jar setup/blaze.jar setup/blaze.java build_containers
-
      java -jar setup/blaze.jar setup/blaze.java build_native_libs
+     java -jar setup/blaze.jar setup/blaze.java tests
 
 For information on registering your x86_64 host to run other architectures (e.g. riscv64 or aarch64), please see
-the readme for https://github.com/fizzed/jne#development
+the readme for https://github.com/fizzed/buildx

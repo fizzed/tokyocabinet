@@ -47,6 +47,11 @@
 
         <dependency>
             <groupId>com.fizzed</groupId>
+            <artifactId>tokyocabinet-linux-armel</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fizzed</groupId>
             <artifactId>tokyocabinet-linux_musl-x64</artifactId>
         </dependency>
 

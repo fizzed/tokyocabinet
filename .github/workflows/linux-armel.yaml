@@ -1,4 +1,4 @@
-name: Linux armhf
+name: Linux armel
 on:
   - push
   - workflow_dispatch
@@ -17,7 +17,7 @@ jobs:
         with:
           arch: none
           distro: none
-          base_image: fizzed/buildx:arm32v7-ubuntu16-jdk11
+          base_image: fizzed/buildx:arm32v5-debian11-jdk11
           dockerRunArgs: |
             --volume "~/.m2:/root/.m2" --volume "${PWD}:/mnt"
           run: |
