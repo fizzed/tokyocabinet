@@ -1,4 +1,4 @@
-#!/bin/sh -l
+#!/bin/bash -l
 set -e
 # shell w/ login & interactive, plus exit if any command fails
 
@@ -9,53 +9,17 @@ PROJECT_DIR=$PWD
 BUILDOS=$1
 BUILDARCH=$2
 
-if [ -z "${BUILDOS}" ] || [ -z "${BUILDOS}" ]; then
-  echo "Usage: script [os] [arch]"
-  exit 1
-fi
+# Setup cross compile environment
+source /opt/setup-cross-build-environment.sh $BUILDOS $BUILDARCH
 
 mkdir -p target
 rsync -avrt --delete ./native/ ./target/
-
-if [ $BUILDOS = "linux" ]; then
-  if [ $BUILDARCH = "arm64" ]; then
-    BUILDTARGET=aarch64-linux-gnu
-  elif [ $BUILDARCH = "armhf" ]; then
-    # its odd how raspbian/rpios both call their architecture "armhf" when its really not
-    BUILDTARGET=arm-linux-gnueabihf
-  elif [ $BUILDARCH = "armel" ]; then
-    BUILDTARGET=arm-linux-gnueabi
-  elif [ $BUILDARCH = "riscv64" ]; then
-    BUILDTARGET=riscv64-linux-gnu
-  fi
-  export SYSROOT="/usr/${BUILDTARGET}"
-  if [ $BUILDARCH = "x64" ]; then
-    BUILDTARGET=x86_64-linux-gnu
-    export SYSROOT="/usr"
-  fi
-elif [ $BUILDOS = "linux_musl" ]; then
-  # https://stackoverflow.com/questions/39936341/how-do-i-use-a-sysroot-with-autoconf
-  if [ $BUILDARCH = "x64" ]; then
-    BUILDTARGET=x86_64-linux-musl
-  elif [ $BUILDARCH = "arm64" ]; then
-    BUILDTARGET=aarch64-linux-musl
-  fi
-  export SYSROOT="/opt/${BUILDTARGET}-cross/${BUILDTARGET}"
-  export CFLAGS="--sysroot=${SYSROOT} $CFLAGS"
-  export CXXFLAGS="--sysroot=${SYSROOT} $CFLAGS"
-  export LDFLAGS="--sysroot=${SYSROOT} -L${SYSROOT}/usr/lib $CFLAGS"
-fi
-
-if [ -z "$BUILDTARGET" ]; then
-  echo "Unsupported os-arch: $BUILDOS-$BUILDARCH"
-  exit 1
-fi
 
 # zlib  dependency
 cd target
 tar zxvf /opt/zlib-1.2.13.tar.gz
 cd zlib-1.2.13
-CC=$BUILDTARGET-gcc ./configure --prefix=$SYSROOT
+./configure --prefix=$SYSROOT
 make
 make install
 cd ../../
@@ -65,7 +29,7 @@ cd target
 tar zxvf /opt/bzip2-1.0.8.tar.gz
 cd bzip2-1.0.8
 sed -i 's/CC=gcc/#CC=gcc/g' Makefile-libbz2_so
-CC=$BUILDTARGET-gcc make -f Makefile-libbz2_so
+make -f Makefile-libbz2_so
 cp -av bzlib.h $SYSROOT/include/
 cp -av libbz2.so* $SYSROOT/lib/
 cd ../../
