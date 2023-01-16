@@ -1,3 +1,11 @@
+## 0.0.14 - 2023-01-16
+ - Based on TokyoCabinet 1.4.48 and TokyoCabinet-Java 1.24
+ - Bump jne v3.2.1
+ - Improved cross build system
+ - Support for linux-armel architecture
+
+## 0.0.13 - skipping, unlucky number
+
 ## 0.0.12 - 2023-01-04
  - Based on TokyoCabinet 1.4.48 and TokyoCabinet-Java 1.24
  - Bump jne v3.2.0
