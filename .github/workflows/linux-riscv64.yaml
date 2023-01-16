@@ -3,7 +3,7 @@ on:
   - push
   - workflow_dispatch
 jobs:
-  bootstrap:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
@@ -22,7 +22,7 @@ jobs:
             --volume "~/.m2:/root/.m2" --volume "${PWD}:/mnt"
           install: |
             apt update
-            apt -y install git curl wget gzip
+            apt -y install git curl wget gzip libatomic1
             curl -s https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-java.sh | sh -s -- --version=19
             curl -s https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-maven.sh | sh
           run: |

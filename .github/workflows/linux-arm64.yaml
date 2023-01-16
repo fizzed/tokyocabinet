@@ -22,11 +22,10 @@ jobs:
             --volume "~/.m2:/root/.m2" --volume "${PWD}:/mnt"
           install: |
             apt update
-            apt -y install openjdk-11-jdk-headless git curl wget gzip
-            wget https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-maven.sh
-            chmod +x ./bootstrap-maven.sh
-            ./bootstrap-maven.sh
+            apt -y install git curl wget gzip libatomic1
+            curl -s https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-java.sh | sh -s -- --version=11
+            curl -s https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-maven.sh | sh
           run: |
-            export PATH=$PATH:/opt/maven/current/bin
+            export PATH=$PATH:/usr/lib/jvm/current/bin:/opt/maven/current/bin
             cd /mnt
             mvn test
