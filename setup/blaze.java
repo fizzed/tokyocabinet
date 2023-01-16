@@ -21,37 +21,37 @@ public class blaze {
         // Linux arm64 (ubuntu 16.04, glibc 2.23+)
         new Target("linux", "x64")
             .setTags("build")
-            .setContainerImage("amd64/ubuntu:16.04"),
+            .setContainerImage("fizzed/buildx:amd64-ubuntu16-jdk11-cross-build"),
 
         // Linux arm64 (ubuntu 16.04, glibc 2.23+)
         new Target("linux", "arm64")
             .setTags("build")
-            .setContainerImage("amd64/ubuntu:16.04"),
+            .setContainerImage("fizzed/buildx:amd64-ubuntu16-jdk11-cross-build"),
 
         // Linux armhf (ubuntu 16.04, glibc 2.23+)
         new Target("linux", "armhf")
             .setTags("build")
-            .setContainerImage("amd64/ubuntu:16.04"),
+            .setContainerImage("fizzed/buildx:amd64-ubuntu16-jdk11-cross-build"),
 
         // Linux armhf (ubuntu 16.04, glibc 2.23+)
         new Target("linux", "armel")
             .setTags("build")
-            .setContainerImage("amd64/ubuntu:16.04"),
+            .setContainerImage("fizzed/buildx:amd64-ubuntu16-jdk11-cross-build"),
 
         // Linux riscv64 (ubuntu 18.04, glibc 2.31+)
         new Target("linux", "riscv64")
             .setTags("build")
-            .setContainerImage("amd64/ubuntu:18.04"),
+            .setContainerImage("fizzed/buildx:amd64-ubuntu18-jdk11-cross-build"),
 
         // Linux MUSL x64 (alpine 3.11)
         new Target("linux_musl", "x64")
             .setTags("build")
-            .setContainerImage("amd64/ubuntu:16.04"),
+            .setContainerImage("fizzed/buildx:amd64-ubuntu16-jdk11-cross-build"),
 
         // Linux MUSL arm64 (alpine 3.11)
         new Target("linux_musl", "arm64")
             .setTags("build")
-            .setContainerImage("amd64/ubuntu:16.04"),
+            .setContainerImage("fizzed/buildx:amd64-ubuntu16-jdk11-cross-build"),
 
         // MacOS x64 (10.13+)
         new Target("macos", "x64")
@@ -69,33 +69,33 @@ public class blaze {
 
         new Target("linux", "x64-test")
             .setTags("test")
-            .setContainerImage("amd64/ubuntu:16.04"),
+            .setContainerImage("fizzed/buildx:amd64-ubuntu16-jdk11"),
 
         new Target("linux", "arm64-test")
             .setTags("test")
             .setHost("bmh-build-arm64-ubuntu22-1")
-            .setContainerImage("arm64v8/ubuntu:16.04"),
+            .setContainerImage("fizzed/buildx:arm64v8-ubuntu16-jdk11"),
 
         new Target("linux", "armhf-test")
             .setTags("test")
-            .setContainerImage("arm32v7/ubuntu:16.04"),
+            .setContainerImage("fizzed/buildx:arm32v7-ubuntu16-jdk11"),
 
         new Target("linux", "armel-test")
             .setTags("test")
-            .setContainerImage("arm32v5/debian"),
+            .setContainerImage("fizzed/buildx:arm32v5-debian11-jdk11"),
 
         new Target("linux", "riscv64-test")
             .setTags("test")
-            .setContainerImage("riscv64/ubuntu:20.04"),
+            .setContainerImage("fizzed/buildx:riscv64-ubuntu20-jdk19"),
 
         new Target("linux_musl", "x64-test")
             .setTags("test")
-            .setContainerImage("amd64/alpine:3.11"),
+            .setContainerImage("fizzed/buildx:amd64-alpine3.11-jdk11"),
 
         new Target("linux_musl", "arm64-test")
             .setTags("test")
             .setHost("bmh-build-arm64-ubuntu22-1")
-            .setContainerImage("arm64v8/alpine:3.11")
+            .setContainerImage("fizzed/buildx:arm64v8-alpine3.11-jdk11")
 
         /*new Target("linux", "x64")
             .setContainerImage("amd64/ubuntu:16.04")*/

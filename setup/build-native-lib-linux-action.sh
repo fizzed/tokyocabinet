@@ -1,6 +1,6 @@
 #!/bin/sh -l
-# Use a shell as though we logged in
 set -e
+# shell w/ login & interactive, plus exit if any command fails
 
 BASEDIR=$(dirname "$0")
 cd "$BASEDIR/.."
@@ -100,6 +100,7 @@ OUTPUT_DIR="../../tokyocabinet-${BUILDOS}-${BUILDARCH}/src/main/resources/jne/${
 
 $BUILDTARGET-strip ./$TARGET_LIB
 cp ./$TARGET_LIB "$OUTPUT_DIR"
+chmod +x "$OUTPUT_DIR/$TARGET_LIB"
 
 echo "Copied ./$TARGET_LIB to $OUTPUT_DIR"
 echo "Done!"

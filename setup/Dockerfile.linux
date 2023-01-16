@@ -5,20 +5,8 @@ FROM ${FROM_IMAGE}
 ARG USERID
 ARG USERNAME
 
-RUN apt update -y
-RUN apt -y install unzip gzip wget curl git rsync libatomic1
-
-RUN curl -s https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-java.sh | sh -s -- --version=11
-RUN curl -s https://raw.githubusercontent.com/jjlauer/provisioning/master/linux/bootstrap-maven.sh | sh
-
-RUN apt -y install zlib1g-dev libbz2-dev
+RUN apt -y install zlib1g bzip2
 
 RUN groupadd -g ${USERID} ${USERNAME}
 RUN useradd -m -l -u ${USERID} -g ${USERNAME} ${USERNAME}
 USER ${USERNAME}
-
-ENV M2_HOME="/opt/maven/current"
-ENV JAVA_HOME="/usr/lib/jvm/current"
-ENV PATH="${JAVA_HOME}/bin:${M2_HOME}/bin:${PATH}"
-# this fixes the "spawn" error in latest java version
-ENV JDK_JAVA_OPTIONS="-Djdk.lang.Process.launchMechanism=vfork"
