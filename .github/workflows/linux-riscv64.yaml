@@ -17,7 +17,7 @@ jobs:
         with:
           arch: none
           distro: none
-          base_image: fizzed/buildx:riscv64-ubuntu20-jdk19
+          base_image: fizzed/buildx:riscv64-ubuntu20-jdk21
           dockerRunArgs: |
             --volume "~/.m2:/root/.m2" --volume "${PWD}:/mnt"
           run: |
