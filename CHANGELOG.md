@@ -1,3 +1,10 @@
+# Tokyocabinet for Java
+
+## 0.0.15 - 2023-11-05
+- Based on TokyoCabinet 1.4.48 and TokyoCabinet-Java 1.24
+- Bump jne v4.1.1
+- Improved cross build system
+
 ## 0.0.14 - 2023-01-16
  - Based on TokyoCabinet 1.4.48 and TokyoCabinet-Java 1.24
  - Bump jne v3.2.1
