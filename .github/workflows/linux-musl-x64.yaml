@@ -17,7 +17,7 @@ jobs:
         with:
           arch: none
           distro: none
-          base_image: fizzed/buildx:amd64-alpine3.11-jdk11
+          base_image: fizzed/buildx:x64-alpine3.11-jdk11
           shell: /bin/sh
           dockerRunArgs: |
             --volume "~/.m2:/root/.m2" --volume "${PWD}:/mnt"
