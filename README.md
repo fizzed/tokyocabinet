@@ -5,6 +5,7 @@
 [![Java 8](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/java8.yaml?branch=master&label=Java%208&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/java8.yaml)
 [![Java 11](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/java11.yaml?branch=master&label=Java%2011&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/java11.yaml)
 [![Java 17](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/java17.yaml?branch=master&label=Java%2017&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/java17.yaml)
+[![Java 21](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/java21.yaml?branch=master&label=Java%2021&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/java21.yaml)
 
 [![Linux x64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/java11.yaml?branch=master&label=Linux%20x64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/java11.yaml)
 [![Linux arm64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/linux-arm64.yaml?branch=master&label=Linux%20arm64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/linux-arm64.yaml)
@@ -100,9 +101,9 @@ build machines running on arm64, macos x64, and macos arm64.
 To build containers, you'll want to edit setup/blaze.java and comment out/edit which platforms you'd like to build for,
 or potentially change them running on a remote machine via SSH.  Once you're happy with what you want to build for:
 
-     java -jar setup/blaze.jar setup/blaze.java build_containers
-     java -jar setup/blaze.jar setup/blaze.java build_native_libs
-     java -jar setup/blaze.jar setup/blaze.java tests
+     java -jar cross_build_containers
+     java -jar cross_build_natives
+     java -jar cross_tests
 
 For information on registering your x86_64 host to run other architectures (e.g. riscv64 or aarch64), please see
 the readme for https://github.com/fizzed/buildx
