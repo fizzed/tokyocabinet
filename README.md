@@ -17,12 +17,30 @@
 [![MacOS x64](https://img.shields.io/github/actions/workflow/status/fizzed/tokyocabinet/macos-x64.yaml?branch=master&label=MacOS%20x64&style=flat-square)](https://github.com/fizzed/tokyocabinet/actions/workflows/macos-x64.yaml)
 ![MacOS arm64](https://img.shields.io/badge/MacOS%20arm64-available-blue)
 
+## Overview
+
 TokyoCabinet remains a workhorse key-value store that still represents excellent performance vs. modern popular embedded
 key-value stores such as LevelDB or RocksDB.  This is a published version of the library for Java 8+, along with native libs that 
 are automatically extracted at runtime.
 
 The Java library is as unmodified as possible from the original TokyoCabinet, but a few changes were made to automatically
 extract the library at runtime.
+
+## Sponsorship & Support
+
+![](https://cdn.fizzed.com/github/fizzed-logo-100.png)
+
+Project by [Fizzed, Inc.](http://fizzed.com) (Follow on Twitter: [@fizzed_inc](http://twitter.com/fizzed_inc))
+
+**Developing and maintaining opensource projects requires significant time.** If you find this project useful or need
+commercial support, we'd love to chat. Drop us an email at [ping@fizzed.com](mailto:ping@fizzed.com)
+
+Project sponsors may include the following benefits:
+
+- Priority support (outside of Github)
+- Feature development & roadmap
+- Priority bug fixes
+- Privately hosted continuous integration tests for their unique edge or use cases
 
 ## Usage
 
@@ -107,3 +125,9 @@ or potentially change them running on a remote machine via SSH.  Once you're hap
 
 For information on registering your x86_64 host to run other architectures (e.g. riscv64 or aarch64), please see
 the readme for https://github.com/fizzed/buildx
+
+## License
+
+Copyright (C) 2020+ Fizzed, Inc.
+
+This work is licensed under the Apache License, Version 2.0. See LICENSE for details.
