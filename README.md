@@ -53,7 +53,7 @@ Add the following to your maven POM file for Linux x64
 <dependency>
   <groupId>com.fizzed</groupId>
   <artifactId>tokyocabinet-linux-x64</artifactId>
-  <version>VERSION-HERE</version>
+  <version>0.0.15</version>
 </dependency>
 ```
 
@@ -63,7 +63,7 @@ Or MacOS arm64 (Apple silicon)
 <dependency>
   <groupId>com.fizzed</groupId>
   <artifactId>tokyocabinet-macos-arm64</artifactId>
-  <version>VERSION-HERE</version>
+  <version>0.0.15</version>
 </dependency>
 ```
 
@@ -73,7 +73,7 @@ Or for all operating system & arches
 <dependency>
   <groupId>com.fizzed</groupId>
   <artifactId>tokyocabinet-all-natives</artifactId>
-  <version>VERSION-HERE</version>
+  <version>0.0.15</version>
 </dependency>
 ```
 
@@ -85,7 +85,7 @@ To simplify versions, you may optionally want to import our BOM (bill of materia
         <dependency>
             <groupId>com.fizzed</groupId>
             <artifactId>tokyocabinet-bom</artifactId>
-            <version>VERSION-HERE</version>
+            <version>0.0.15</version>
             <scope>import</scope>
             <type>pom</type>
         </dependency>
