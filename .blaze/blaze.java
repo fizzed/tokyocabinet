@@ -1,27 +1,21 @@
-import com.fizzed.blaze.Config;
 import com.fizzed.blaze.Contexts;
 import com.fizzed.blaze.Task;
+import com.fizzed.blaze.project.PublicBlaze;
 import com.fizzed.buildx.Buildx;
 import com.fizzed.buildx.ContainerBuilder;
 import com.fizzed.buildx.Target;
 import com.fizzed.jne.*;
-import org.slf4j.Logger;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static com.fizzed.blaze.Contexts.withBaseDir;
 import static com.fizzed.blaze.Systems.*;
 import static com.fizzed.blaze.util.Globber.globber;
 import static java.util.Arrays.asList;
-import static java.util.Optional.ofNullable;
 
-public class blaze {
+public class blaze extends PublicBlaze {
 
-    private final Logger log = Contexts.logger();
-    private final Config config = Contexts.config();
-    private final Path projectDir = withBaseDir("../").toAbsolutePath();
     private final NativeTarget localNativeTarget = NativeTarget.detect();
     private final Path nativeDir = projectDir.resolve("native");
     private final Path targetDir = projectDir.resolve("target");
@@ -52,33 +46,6 @@ public class blaze {
             .run();
     }
 
-    @Task(order = 2)
-    public void test() throws Exception {
-        final Integer jdkVersion = this.config.value("jdk.version", Integer.class).orNull();
-        final HardwareArchitecture jdkArch = ofNullable(this.config.value("jdk.arch").orNull())
-            .map(HardwareArchitecture::resolve)
-            .orElse(null);
-
-        final long start = System.currentTimeMillis();
-        final JavaHome jdkHome = new JavaHomeFinder()
-            .jdk()
-            .version(jdkVersion)
-            .hardwareArchitecture(jdkArch)
-            .preferredDistributions()
-            .sorted(jdkVersion != null || jdkArch != null)  // sort if any criteria provided
-            .find();
-
-        log.info("");
-        log.info("Detected {} (in {} ms)", jdkHome, (System.currentTimeMillis()-start));
-        log.info("");
-
-        exec("mvn", "clean", "test")
-            .workingDir(this.projectDir)
-            .env("JAVA_HOME", jdkHome.getDirectory().toString())
-            .verbose()
-            .run();
-    }
-
     @Task(order = 3)
     public void clean() throws Exception {
         rm(this.targetDir)
@@ -88,7 +55,7 @@ public class blaze {
             .run();
     }
 
-    private final List<Target> crossTargets = asList(
+    private final List<Target> crossBuildTargets = asList(
 
         //
         // Linux
@@ -253,7 +220,7 @@ public class blaze {
 
     @Task(order = 50)
     public void cross_build_containers() throws Exception {
-        new Buildx(crossTargets)
+        new Buildx(crossBuildTargets)
             .containersOnly()
             .execute((target, project) -> {
                 /*
@@ -271,7 +238,7 @@ public class blaze {
 
     @Task(order = 51)
     public void cross_build_natives() throws Exception {
-        new Buildx(crossTargets)
+        new Buildx(crossBuildTargets)
             .tags("build")
             .execute((target, project) -> {
                 // delegate to blaze
@@ -285,14 +252,14 @@ public class blaze {
             });
     }
 
-    @Task(order = 53)
-    public void cross_tests() throws Exception {
-        new Buildx(crossTargets)
-            .tags("test")
-            .execute((target, project) -> {
-                project.action("java", "-jar", "blaze.jar", "test")
-                    .run();
-            });
+    @Override
+    protected List<Target> crossTestTargets() {
+        // everything but openbsd/freebsd/windows
+        return super.crossTestTargets().stream()
+            .filter(v -> !v.getOs().contains("openbsd"))
+            .filter(v -> !v.getOs().contains("freebsd"))
+            .filter(v -> !v.getOs().contains("windows"))
+            .collect(Collectors.toList());
     }
 
 }
