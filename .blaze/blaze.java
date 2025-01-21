@@ -97,7 +97,7 @@ public class blaze extends PublicBlaze {
             .setContainerImage("fizzed/buildx:x64-ubuntu16-jdk11-buildx-linux_musl-arm64"),
 
         //
-        // FreeBSD (will not easily compile on freebsd)
+        // FreeBSD
         //
 
         new Target("freebsd", "x64")
@@ -105,7 +105,7 @@ public class blaze extends PublicBlaze {
             .setHost("bmh-build-x64-freebsd12-1"),
 
         //
-        // OpenBSD (will not easily compile on openbsd)
+        // OpenBSD
         //
 
         new Target("openbsd", "x64")
@@ -161,10 +161,7 @@ public class blaze extends PublicBlaze {
 
     @Override
     protected List<Target> crossTestTargets() {
-        // everything but openbsd/freebsd/windows
         return super.crossTestTargets().stream()
-            .filter(v -> !v.getOs().contains("openbsd"))
-            .filter(v -> !v.getOs().contains("freebsd"))
             .filter(v -> !v.getOs().contains("windows"))
             .collect(Collectors.toList());
     }
