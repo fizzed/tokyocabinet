@@ -1,6 +1,5 @@
-#!/bin/bash -l
+#!/bin/sh
 set -e
-# shell w/ login & interactive, plus exit if any command fails
 
 BASEDIR=$(dirname "$0")
 cd "$BASEDIR/.."
@@ -10,8 +9,7 @@ BUILDOS=$1
 BUILDARCH=$2
 BUILDTARGET=$3
 
-# Setup cross compile environment
-#source /opt/setup-cross-build-environment.sh $BUILDOS $BUILDARCH
+
 
 mkdir -p target
 rsync -avrt --delete ./native/ ./target/

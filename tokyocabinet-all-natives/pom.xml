@@ -75,6 +75,16 @@
             <artifactId>tokyocabinet-macos-arm64</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.fizzed</groupId>
+            <artifactId>tokyocabinet-freebsd-x64</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fizzed</groupId>
+            <artifactId>tokyocabinet-openbsd-x64</artifactId>
+        </dependency>
+
         <!-- testing -->
 
         <dependency>

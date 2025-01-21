@@ -33,6 +33,8 @@
         <module>tokyocabinet-linux-riscv64</module>
         <module>tokyocabinet-macos-x64</module>
         <module>tokyocabinet-macos-arm64</module>
+        <module>tokyocabinet-freebsd-x64</module>
+        <module>tokyocabinet-openbsd-x64</module>
         <module>tokyocabinet-bom</module>
         <module>tokyocabinet-all-natives</module>
     </modules>

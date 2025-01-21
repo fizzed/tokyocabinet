@@ -75,6 +75,18 @@
 
             <dependency>
                 <groupId>com.fizzed</groupId>
+                <artifactId>tokyocabinet-freebsd-x64</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fizzed</groupId>
+                <artifactId>tokyocabinet-openbsd-x64</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fizzed</groupId>
                 <artifactId>tokyocabinet-all-natives</artifactId>
                 <version>${project.version}</version>
             </dependency>
