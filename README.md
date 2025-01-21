@@ -19,6 +19,8 @@ The following platforms are tested using the [Fizzed, Inc.](http://fizzed.com) b
 [![Linux riscv64](https://img.shields.io/badge/Linux%20riscv64-passing-green)](buildx-results.txt)
 [![Linux MUSL x64](https://img.shields.io/badge/Linux%20MUSL%20x64-passing-green)](buildx-results.txt)
 [![MacOS x64](https://img.shields.io/badge/MacOS%20x64-passing-green)](buildx-results.txt)
+[![FreeBSD x64](https://img.shields.io/badge/FreeBSD%20x64-passing-green)](buildx-results.txt)
+[![OpenBSD x64](https://img.shields.io/badge/OpenBSD%20x64-passing-green)](buildx-results.txt)
 
 ## Overview
 
@@ -111,6 +113,8 @@ Zip and Bzip2 libraries must be installed for this version to run.
 | Linux riscv64    | tokyocabinet-linux-riscv64    | built on ubuntu 18.04, glibc 2.31 |
 | MacOS x64        | tokyocabinet-macos-x64        | built on macos 10.13 high sierra  |
 | MacOS arm64      | tokyocabinet-macos-arm64      | built on macos 12 monterey        |
+| FreeBSD x64      | tkrzw-freebsd-x64             | targets freebsd 12+               |
+| OpenBSD x64      | tkrzw-openbsd-x64             | targets openbsd 7.5+              |
 
 ## Development
 

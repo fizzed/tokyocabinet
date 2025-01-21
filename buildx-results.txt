@@ -1,8 +1,8 @@
 Buildx Results
 --------------
 Cross platform tests use the Buildx project: https://github.com/fizzed/buildx
-Commit: 63bf8d7667e61c1831a5ac5b8e4939cf1d73ed95
-Date: 2025-01-20T19:23:21.120679Z[UTC]
+Commit: a5f3c45160a4ebe9a4fe0d12139b4ae1605f146c
+Date: 2025-01-21T22:24:41.291804Z[UTC]
 
 linux-x64                                                         success
 linux-arm64                                                       success
@@ -10,4 +10,6 @@ linux-riscv64                                                     success
 linux_musl-x64                                                    success
 macos-x64                                                         success
 macos-arm64                                                       success
+freebsd-x64                                                       success
+openbsd-x64                                                       success
 
